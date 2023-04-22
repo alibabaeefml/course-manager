@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const CourseRepository = require("../repositories/course");
 
-router.get("/index", async (req, res) => {
+router.get("/index-course", async (req, res) => {
   res.send(await new CourseRepository().index());
 });
 
@@ -20,8 +20,12 @@ router.post("/create", async (req, res) => {
   );
 });
 
-router.get("/show", async (req, res) => {
+router.get(`/show-course`, async (req, res) => {
   res.send(await new CourseRepository().show(62));
+});
+
+router.get("/update-course", async (req, res) => {
+  res.send(await new CourseRepository().update(62, { name: "دوره جدید" }));
 });
 
 module.exports = router;
