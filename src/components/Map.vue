@@ -1,8 +1,19 @@
 <template>
-  <div id="iran_map"></div>
+  <div id="iran_map" style="width: 500px; height: 500px; margin: auto"></div>
+ <CoursesList :course_modal="course_modal"/>
 </template>
 
 <script setup>
+import { ref } from "vue";
+import CoursesList from "./CoursesList.vue";
+const course_modal = ref({
+  open: false,
+  data: {
+    title: "لیست دوره ها",
+    subtitle: null,
+    icon: "mdi-google-classroom",
+  },
+});
 $(() => {
   $("#iran_map").vectorMap({
     map: "ir_mill",
@@ -10,8 +21,7 @@ $(() => {
     backgroundColor: "transparent",
     zoomOnScroll: false,
     normalizeFunction: "polynomial",
-    hoverOpacity: 0.7,
-    hoverColor: false,
+    hoverOpacity: 1,
     regionStyle: {
       initial: {
         fill: "green",
@@ -21,6 +31,11 @@ $(() => {
         "stroke-opacity": 1,
       },
     },
+  });
+
+  $("[data-code]").click((e) => {
+    course_modal.value.open = true;
+
   });
 });
 </script>

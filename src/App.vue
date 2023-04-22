@@ -7,6 +7,7 @@
           :rail="rail"
           permanent
           @click="rail = false"
+          color="primary"
         >
           <v-list-item
             prepend-avatar="@/assets/logo.png"
@@ -42,7 +43,7 @@
             ></v-list-item>
           </v-list>
         </v-navigation-drawer>
-        <v-main >
+        <v-main>
           <router-view />
         </v-main>
       </v-layout>
@@ -64,5 +65,17 @@ const rail = ref(true);
 }
 :root {
   font-family: iranyekan;
+}
+[data-code] {
+  transition: 0.3s;
+}
+[data-code]:hover {
+  filter: drop-shadow(0px 0px 10px black);
+  fill: lightgreen;
+  opacity: 1;
+}
+[data-code]:active {
+  fill: green;
+  filter: unset;
 }
 </style>

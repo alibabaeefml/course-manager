@@ -14,6 +14,7 @@
     "cors": "^2.8.5",
     "electron": "^24.1.2",
     "express": "^4.18.2",
+    "pinia": "^2.0.35",
     "roboto-fontface": "*",
     "vue": "^3.2.38",
     "vue-router": "^4.0.0",
