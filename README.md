@@ -1,3 +1,7 @@
+Local Course Registration Manager Application
+
+Vue3 + NodeJs
+
 # default
 
 ## Project setup
