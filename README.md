@@ -1,4 +1,4 @@
-Local Course Registration Manager Application
+Course Registration Manager Local Application
 
 Vue3 + NodeJs
 
