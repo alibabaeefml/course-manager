@@ -1,4 +1,3 @@
-const { resolve } = require("path");
 const CourseModel = require("../models/course");
 const fs = require("fs");
 
@@ -54,8 +53,8 @@ class CourseRepository {
       if (v.id == course_id) {
         for (let item in course_data) {
           v[item] = course_data[item];
-          found = v;
         }
+        found = v;
       }
     });
     if (!found) {
@@ -68,6 +67,24 @@ class CourseRepository {
         (err, res) => {
           if (err) reject(err);
           resolve(found);
+        }
+      );
+    });
+  }
+  async delete(course_id) {
+    let courses = await this.index();
+    courses.map((v) => {
+      if(v.id == course_id){
+        courses.splice(courses.indexOf(v),1);
+      }
+    });
+    return new Promise((resolve, reject) => {
+      fs.writeFile(
+        "database/courses.json",
+        JSON.stringify(courses),
+        (err, res) => {
+          if (err) reject(err);
+          resolve(`deleted course by id ${course_id}`);
         }
       );
     });

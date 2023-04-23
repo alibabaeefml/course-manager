@@ -5,7 +5,7 @@ router.get("/index-course", async (req, res) => {
   res.send(await new CourseRepository().index());
 });
 
-router.post("/create", async (req, res) => {
+router.post("/create-course", async (req, res) => {
   res.send(
     await new CourseRepository().create({
       id: 0,
@@ -24,8 +24,12 @@ router.get(`/show-course`, async (req, res) => {
   res.send(await new CourseRepository().show(62));
 });
 
-router.get("/update-course", async (req, res) => {
+router.put("/update-course", async (req, res) => {
   res.send(await new CourseRepository().update(62, { name: "دوره جدید" }));
 });
+
+router.delete("/delete-course", async (req, res)=>{
+  res.send(await new CourseRepository().delete(62))
+})
 
 module.exports = router;

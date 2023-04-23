@@ -1,3 +1,5 @@
+const random_id = () => Math.floor(Math.random() * 615131613);
+
 module.exports = {
   get(data) {
     return {
@@ -13,6 +15,7 @@ module.exports = {
   },
   set(data) {
     return {
+      id: random_id(),
       name: data.name,
       number: data.number,
       members_quantity: data.members_quantity || null,
