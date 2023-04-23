@@ -71,11 +71,10 @@ const rail = ref(true);
 }
 [data-code]:hover {
   filter: drop-shadow(0px 0px 10px black);
-  fill: lightgreen;
   opacity: 1;
 }
 [data-code]:active {
-  fill: green;
+  fill: #02d6d7;
   filter: unset;
 }
 </style>

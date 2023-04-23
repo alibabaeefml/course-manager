@@ -2,22 +2,24 @@ const MediaModel = require("../models/media");
 const fs = require("fs");
 
 class MediaRepository {
-  async index(data = {}) {
+  async index(course_id = null) {
     return new Promise((resolve, reject) => {
       fs.readFile("database/media.json", "utf8", async (err, res) => {
         if (err) {
           fs.writeFile("database/media.json", "[]", (err, res) => res);
         }
         let media = JSON.parse(res);
-        if (data.course_id) {
+        if (course_id) {
           let found_media = [];
           media.map((v) =>
-            v.course_id == data.course_id ? found_media.push(v) : null
+            v.course_id == course_id ? found_media.push(v) : null
           );
-          resolve(found_media);
-          return;
+          if (found_media.length) {
+            resolve(found_media);
+          } else {
+            resolve("no media found");
+          }
         }
-        resolve(media);
       });
     });
   }

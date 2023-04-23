@@ -2,22 +2,24 @@ const CourseModel = require("../models/course");
 const fs = require("fs");
 
 class CourseRepository {
-  async index(data = {}) {
+  async index(province_id = null) {
     return new Promise((resolve, reject) => {
       fs.readFile("database/courses.json", "utf8", async (err, res) => {
         if (err) {
           fs.writeFile("database/courses.json", "[]", (err, res) => res);
         }
         let courses = JSON.parse(res);
-        if (data.province_id) {
+        if (province_id) {
           let found_courses = [];
           courses.map((v) =>
-            v.province_id == data.province_id ? found_courses.push(v) : null
+            v.province_id == province_id ? found_courses.push(v) : null
           );
-          resolve(found_courses);
-          return;
+          if (found_courses.length) {
+            resolve(found_courses);
+          } else {
+            resolve("no courses found");
+          }
         }
-        resolve(courses);
       });
     });
   }
@@ -66,7 +68,7 @@ class CourseRepository {
         JSON.stringify(courses),
         (err, res) => {
           if (err) reject(err);
-          resolve(found);
+          resolve(courses);
         }
       );
     });
@@ -74,8 +76,8 @@ class CourseRepository {
   async delete(course_id) {
     let courses = await this.index();
     courses.map((v) => {
-      if(v.id == course_id){
-        courses.splice(courses.indexOf(v),1);
+      if (v.id == course_id) {
+        courses.splice(courses.indexOf(v), 1);
       }
     });
     return new Promise((resolve, reject) => {
@@ -84,7 +86,7 @@ class CourseRepository {
         JSON.stringify(courses),
         (err, res) => {
           if (err) reject(err);
-          resolve(`deleted course by id ${course_id}`);
+          resolve(courses);
         }
       );
     });

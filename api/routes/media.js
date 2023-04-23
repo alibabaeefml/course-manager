@@ -11,8 +11,8 @@ router.post("/create-media", async (req, res) => {
   );
 });
 
-router.delete("/delete-media", async (req, res) => {
-  res.send(await new MediaRepository().delete(req.body));
+router.delete("/delete-media/:id", async (req, res) => {
+  res.send(await new MediaRepository().delete(req.params["id"]));
 });
 
 module.exports = router;
