@@ -9,7 +9,7 @@ module.exports = {
   },
   set(data) {
     return {
-      id: random_id(),
+      id: data.id || random_id(),
       course_id: data.course_id,
       src: data.src,
     };

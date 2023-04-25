@@ -1,12 +1,12 @@
 const CourseModel = require("../models/course");
 const fs = require("fs");
-
+const courses_path = "api/database/courses.json";
 class CourseRepository {
   async index(province_id = null) {
     return new Promise((resolve, reject) => {
-      fs.readFile("database/courses.json", "utf8", async (err, res) => {
+      fs.readFile(courses_path, "utf8", async (err, res) => {
         if (err) {
-          fs.writeFile("database/courses.json", "[]", (err, res) => res);
+          fs.writeFile(courses_path, "[]", (err, res) => res);
         }
         let courses = JSON.parse(res);
         if (province_id) {
@@ -17,9 +17,10 @@ class CourseRepository {
           if (found_courses.length) {
             resolve(found_courses);
           } else {
-            resolve("no courses found");
+            resolve(null);
           }
         }
+        resolve(courses);
       });
     });
   }
@@ -28,7 +29,7 @@ class CourseRepository {
     courses.push(CourseModel.set(course_data));
     return new Promise((resolve, reject) => {
       try {
-        fs.writeFile("database/courses.json", JSON.stringify(courses), () => {
+        fs.writeFile(courses_path, JSON.stringify(courses), () => {
           resolve(course_data);
         });
       } catch (err) {
@@ -38,15 +39,9 @@ class CourseRepository {
   }
   async show(course_id) {
     let courses = await this.index();
-    return new Promise((resolve, reject) => {
-      fs.readFile("database/courses.json", "utf8", async (err, res) => {
-        courses.map((v) =>
-          v.id == course_id
-            ? resolve(CourseModel.get(v))
-            : resolve(`no course found by id ${course_id}!`)
-        );
-      });
-    });
+    return courses.map((v) =>
+      v.id == course_id ? CourseModel.get(v) : null
+    )[0];
   }
   async update(course_id, course_data) {
     let courses = await this.index();
@@ -63,14 +58,10 @@ class CourseRepository {
       return `no course found by id ${course_id} to update!`;
     }
     return new Promise((resolve, reject) => {
-      fs.writeFile(
-        "database/courses.json",
-        JSON.stringify(courses),
-        (err, res) => {
-          if (err) reject(err);
-          resolve(courses);
-        }
-      );
+      fs.writeFile(courses_path, JSON.stringify(courses), (err, res) => {
+        if (err) reject(err);
+        resolve(courses);
+      });
     });
   }
   async delete(course_id) {
@@ -81,14 +72,10 @@ class CourseRepository {
       }
     });
     return new Promise((resolve, reject) => {
-      fs.writeFile(
-        "database/courses.json",
-        JSON.stringify(courses),
-        (err, res) => {
-          if (err) reject(err);
-          resolve(courses);
-        }
-      );
+      fs.writeFile(courses_path, JSON.stringify(courses), (err, res) => {
+        if (err) reject(err);
+        resolve(courses);
+      });
     });
   }
 }

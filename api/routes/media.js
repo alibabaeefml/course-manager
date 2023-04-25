@@ -1,8 +1,8 @@
 const MediaRepository = require("../repositories/media");
 const router = require("express").Router();
 
-router.get("/index-media", async (req, res) => {
-  res.send(await new MediaRepository().index(req.body));
+router.get("/index-media/:course_id", async (req, res) => {
+  res.send(await new MediaRepository().index(req.params["course_id"]));
 });
 
 router.post("/create-media", async (req, res) => {

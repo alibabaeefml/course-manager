@@ -3,7 +3,8 @@
     <v-responsive class="text-center">
       <div class="d-flex flex-column" style="gap: 1rem">
         <v-img contain height="200" src="@/assets/logo.png" />
-        <h1>مدیریت دوره های خانوادگی تربیت اسلامی ناجا</h1>
+        <h1>مرکز تربیت و تعالی حضرت ثامن الحجج (ع)</h1>
+        <h1>نرم افزار مدیریت دوره</h1>
         <h2>ورود به برنامه</h2>
         <v-form>
           <v-text-field

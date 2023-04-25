@@ -1,12 +1,12 @@
 const MediaModel = require("../models/media");
 const fs = require("fs");
-
+const media_path = "api/database/media.json";
 class MediaRepository {
   async index(course_id = null) {
     return new Promise((resolve, reject) => {
-      fs.readFile("database/media.json", "utf8", async (err, res) => {
+      fs.readFile(media_path, "utf8", async (err, res) => {
         if (err) {
-          fs.writeFile("database/media.json", "[]", (err, res) => res);
+          fs.writeFile(media_path, "[]", (err, res) => res);
         }
         let media = JSON.parse(res);
         if (course_id) {
@@ -17,7 +17,7 @@ class MediaRepository {
           if (found_media.length) {
             resolve(found_media);
           } else {
-            resolve("no media found");
+            resolve(media);
           }
         }
       });
@@ -27,13 +27,10 @@ class MediaRepository {
     let media = await this.index();
     media.push(MediaModel.set(media_data));
     return new Promise((resolve, reject) => {
-      try {
-        fs.writeFile("database/media.json", JSON.stringify(media), () => {
-          resolve(media_data);
-        });
-      } catch (err) {
-        reject(err);
-      }
+      fs.writeFile(media_path, JSON.stringify(media), (err, res) => {
+        if (err) reject(err);
+        resolve(res);
+      });
     });
   }
   async delete(media_id) {
@@ -44,9 +41,9 @@ class MediaRepository {
       }
     });
     return new Promise((resolve, reject) => {
-      fs.writeFile("database/media.json", JSON.stringify(media), (err, res) => {
+      fs.writeFile(media_path, JSON.stringify(media), (err, res) => {
         if (err) reject(err);
-        resolve(`deleted course by id ${media_id}`);
+        resolve(res);
       });
     });
   }

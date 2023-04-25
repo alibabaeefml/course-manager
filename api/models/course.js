@@ -15,7 +15,7 @@ module.exports = {
   },
   set(data) {
     return {
-      id: random_id(),
+      id: data.id || random_id(),
       name: data.name,
       number: data.number,
       members_quantity: data.members_quantity || null,

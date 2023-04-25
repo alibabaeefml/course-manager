@@ -9,40 +9,25 @@ import { url } from "@/service/api";
 export const use_media_store = defineStore("media", () => {
   const media = ref([]);
 
-  const index_courses = async (province_id) => {
-    const res = await axios.get(url(`/index-media/${province_id}`));
-    courses.value = res.data;
+  const index_media = async (course_id) => {
+    const res = await axios.get(url(`/index-media/${course_id}`));
+    media.value = res.data;
   };
 
-  const create_course = async (course_data) => {
-    const res = await axios.get(url("/create-course/"), course_data);
-    courses.value.push(res.data);
+  const create_media = async (media_data) => {
+    const res = await axios.get(url("/create-course/"), media_data);
+    media.value = res.data;
   };
 
-  const show_course = async (course_id) => {
-    const res = await axios.get(url(`/show-course/${course_id}`));
-    return res.data;
-  };
-
-  const delete_course = async (course_id) => {
-    const res = await axios.delete(url(`/delete-course/${course_id}`));
-    courses.value = res.data;
-  };
-
-  const update_course = async (course_id, course_data) => {
-    const res = await axios.put(
-      url(`/update-course/${course_id}`),
-      course_data
-    );
-    courses.value = res.data;
+  const delete_media = async (media_id) => {
+    const res = await axios.delete(url(`/delete-course/${media_id}`));
+    media.value = res.data;
   };
 
   return {
-    courses,
-    index_courses,
-    create_course,
-    show_course,
-    delete_course,
-    update_course,
+    media,
+    index_media,
+    create_media,
+    delete_media,
   };
 });

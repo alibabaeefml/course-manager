@@ -8,6 +8,7 @@
             color="orange"
             variant="underlined"
             v-model="form.name"
+            @input="submit_change"
           >
           </v-text-field>
           <v-select
@@ -18,6 +19,7 @@
             v-model="form.province_id"
             color="orange"
             variant="underlined"
+            @update:modelValue="submit_change"
           >
           </v-select>
           <v-text-field
@@ -25,6 +27,7 @@
             color="orange"
             variant="underlined"
             v-model="form.start_date"
+            @input="submit_change"
           >
           </v-text-field>
           <v-text-field
@@ -32,6 +35,7 @@
             color="orange"
             variant="underlined"
             v-model="form.finish_date"
+            @input="submit_change"
           >
           </v-text-field>
           <v-text-field
@@ -39,6 +43,7 @@
             color="orange"
             variant="underlined"
             v-model="form.total_hours_participated_in"
+            @input="submit_change"
           >
           </v-text-field>
 
@@ -48,10 +53,13 @@
             hide-delimiter-background
             show-arrows="hover"
           >
-            <v-carousel-item v-for="(slide, i) in slides" :key="i">
-              <v-sheet :color="colors[i]" height="100%">
+            <v-carousel-item
+              v-for="(media, i) in use_media_store().media"
+              :key="media.id"
+            >
+              <v-sheet height="100%">
                 <div class="d-flex fill-height justify-center align-center">
-                  <div class="text-h2">{{ slide }} Slide</div>
+                  <v-img :src="media.src"></v-img>
                 </div>
               </v-sheet>
             </v-carousel-item>
@@ -68,26 +76,25 @@ import { use_course_store as store } from "@/store/course";
 import { ref } from "vue";
 import { onMounted } from "vue";
 import { use_province_store } from "@/store/province";
+import { use_media_store } from "@/store/media";
+import { watchEffect } from "vue";
 
 const { icon, name_fa } = useRoute().meta;
 
 const form = ref({});
+const course_id = useRoute().params.id;
 
 onMounted(
   async () => (
     useRoute().name == "EditCourse"
-      ? (form.value = await store().show_course(useRoute().params.id))
+      ? (form.value = await store().show_course(course_id))
       : null,
-    await use_province_store().index_provinces()
+    await use_province_store().index_provinces(),
+    await use_media_store().index_media(course_id)
   )
 );
 
-const slides = ref(["First", "Second", "Third", "Fourth", "Fifth"]);
-const colors = ref([
-  "indigo",
-  "warning",
-  "pink darken-2",
-  "red lighten-1",
-  "deep-purple accent-4",
-]);
+const submit_change = () => {
+  store().update_course(course_id, form.value);
+};
 </script>
