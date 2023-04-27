@@ -1,4 +1,3 @@
-const MediaModel = require("../models/media");
 const fs = require("fs");
 const formidable = require("formidable");
 const random_id = () => Math.floor(Math.random() * 615131613);
@@ -19,10 +18,9 @@ class MediaRepository {
           );
           if (found_media.length) {
             resolve(found_media);
-          } else {
-            resolve(media);
           }
         }
+        resolve(media);
       });
     });
   }
@@ -63,16 +61,42 @@ class MediaRepository {
     });
   }
   async delete(media_id) {
+    var path = require("path"),
+      fs = require("fs");
+
+    async function fromDir(startPath, filter) {
+      //console.log('Starting from dir '+startPath+'/');
+
+      if (!fs.existsSync(startPath)) {
+        console.log("no dir ", startPath);
+        return;
+      }
+
+      var files = fs.readdirSync(startPath);
+      for (var i = 0; i < files.length; i++) {
+        var filename = path.join(startPath, files[i]);
+        var stat = fs.lstatSync(filename);
+        if (stat.isDirectory()) {
+          fromDir(filename, filter); //recurse
+        } else if (filename.includes(filter)) {
+          fs.unlinkSync(filename);
+        }
+      }
+    }
+
+    await fromDir("api/storage", `media_${media_id}.jpg`);
+
     let media = await this.index();
     media.map((v) => {
       if (v.id == media_id) {
         media.splice(media.indexOf(v), 1);
       }
     });
+
     return new Promise((resolve, reject) => {
       fs.writeFile(media_db, JSON.stringify(media), (err, res) => {
         if (err) reject(err);
-        resolve(res);
+        resolve(media);
       });
     });
   }

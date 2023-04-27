@@ -1,5 +1,7 @@
 <template>
   <div>
+    <h2>گالری دوره</h2>
+
     <v-container>
       <v-row>
         <v-col cols="4" style="aspect-ratio: 1/1">
@@ -23,7 +25,15 @@
           style="aspect-ratio: 1/1"
           v-for="media_item in media"
           :key="media_item.id"
+          class="position-relative image-col h-100"
         >
+          <v-btn
+            class="position-absolute d-none"
+            color="red"
+            style="z-index: 10; left: 2rem; top: 2rem"
+            icon="mdi-delete"
+            @click="store().delete_media(media_item.id)"
+          ></v-btn>
           <v-img class="border rounded-lg" cover :src="media_item.src"></v-img>
         </v-col>
       </v-row>
@@ -42,6 +52,12 @@ const submit_media = async () => {
   form.append("file", $("#fileinput").get(0).files[0]);
   form.append("course_id", course_id);
   await store().create_media(form);
-  $("#fileinput").val("")
+  $("#fileinput").val("");
 };
 </script>
+
+<style scoped>
+.image-col:hover button {
+  display: block !important;
+}
+</style>
