@@ -1,4 +1,3 @@
-const random_id = () => Math.floor(Math.random() * 615131613);
 module.exports = {
   get(data) {
     return {
@@ -6,12 +5,5 @@ module.exports = {
       course_id: data.course_id,
       src: data.src,
     };
-  },
-  set(data) {
-    return {
-      id: data.id || random_id(),
-      course_id: data.course_id,
-      src: data.src,
-    };
-  },
+  }
 };

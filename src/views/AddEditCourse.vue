@@ -47,23 +47,7 @@
           >
           </v-text-field>
 
-          <v-carousel
-            cycle
-            height="400"
-            hide-delimiter-background
-            show-arrows="hover"
-          >
-            <v-carousel-item
-              v-for="(media, i) in use_media_store().media"
-              :key="media.id"
-            >
-              <v-sheet height="100%">
-                <div class="d-flex fill-height justify-center align-center">
-                  <v-img :src="media.src"></v-img>
-                </div>
-              </v-sheet>
-            </v-carousel-item>
-          </v-carousel>
+          <Gallery :media="use_media_store().get_media" />
         </v-card-text>
       </v-card>
     </v-form>
@@ -77,7 +61,7 @@ import { ref } from "vue";
 import { onMounted } from "vue";
 import { use_province_store } from "@/store/province";
 import { use_media_store } from "@/store/media";
-import { watchEffect } from "vue";
+import Gallery from "@/components/Gallery.vue";
 
 const { icon, name_fa } = useRoute().meta;
 
@@ -94,7 +78,11 @@ onMounted(
   )
 );
 
+let timeout = null;
 const submit_change = () => {
-  store().update_course(course_id, form.value);
+  clearTimeout(timeout);
+  timeout = setTimeout(async () => {
+await store().update_course(course_id, form.value);
+  }, 200);
 };
 </script>

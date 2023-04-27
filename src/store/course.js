@@ -35,6 +35,7 @@ export const use_course_store = defineStore("course", () => {
       course_data
     );
     courses.value = res.data;
+    return res.status == 200;
   };
 
   return {

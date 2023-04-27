@@ -6,9 +6,7 @@ router.get("/index-media/:course_id", async (req, res) => {
 });
 
 router.post("/create-media", async (req, res) => {
-  res.send(
-    await new MediaRepository().create(req.body)
-  );
+  res.send(await new MediaRepository().create(req));
 });
 
 router.delete("/delete-media/:id", async (req, res) => {
