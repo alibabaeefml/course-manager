@@ -1,7 +1,11 @@
 <template>
   <v-container class="fill-height">
     <v-form class="w-100">
-      <v-card :title="name_fa" :prepend-icon="icon" class="w-100">
+      <v-card
+        :title="useRoute().meta.name_fa"
+        :prepend-icon="useRoute().meta.icon"
+        class="w-100"
+      >
         <v-card-text>
           <v-text-field
             label="نام دوره"
@@ -13,13 +17,14 @@
           </v-text-field>
           <v-select
             label="استان"
-            :items="use_province_store().provinces"
+            :items="get_provinces"
             item-title="name_fa"
             item-value="id"
             v-model="form.province_id"
             color="orange"
             variant="underlined"
             @update:modelValue="submit_change"
+            :disabled="useRoute().params.id ? true : false"
           >
           </v-select>
           <v-text-field
@@ -47,7 +52,7 @@
           >
           </v-text-field>
 
-          <Gallery :media="use_media_store().get_media" />
+          <Gallery :media="get_media" />
         </v-card-text>
       </v-card>
     </v-form>
@@ -58,31 +63,35 @@
 import { useRoute } from "vue-router";
 import { use_course_store as store } from "@/store/course";
 import { ref } from "vue";
-import { onMounted } from "vue";
 import { use_province_store } from "@/store/province";
 import { use_media_store } from "@/store/media";
 import Gallery from "@/components/Gallery.vue";
-
-const { icon, name_fa } = useRoute().meta;
+import { storeToRefs } from "pinia";
+import { onBeforeMount } from "vue";
+import { onUpdated } from "vue";
 
 const form = ref({});
-const course_id = useRoute().params.id;
 
-onMounted(
-  async () => (
-    useRoute().name == "EditCourse"
-      ? (form.value = await store().show_course(course_id))
-      : null,
-    await use_province_store().index_provinces(),
-    await use_media_store().index_media(course_id)
-  )
-);
+const { get_media } = storeToRefs(use_media_store());
+const { get_provinces } = storeToRefs(use_province_store());
 
-let timeout = null;
+const show_course = async () => {
+  let { id } = useRoute().params;
+  if (id) {
+    form.value = await store().show_course(id);
+    await use_media_store().index_media(id);
+  }
+  await use_province_store().index_provinces();
+};
+show_course();
+
+onUpdated(() => (useRoute().name == "AddCourse" ? (form.value = {}) : null));
+
+let timeout = ref(null);
 const submit_change = () => {
-  clearTimeout(timeout);
-  timeout = setTimeout(async () => {
-await store().update_course(course_id, form.value);
+  clearTimeout(timeout.value);
+  timeout.value = setTimeout(async () => {
+    await store().update_course(form.value.id, form.value);
   }, 200);
 };
 </script>

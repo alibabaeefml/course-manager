@@ -1,8 +1,11 @@
-const fs = require("fs");
-const formidable = require("formidable");
+import fs from "fs";
+import formidable from "formidable";
+import path from "path";
+
 const random_id = () => Math.floor(Math.random() * 615131613);
 
 const media_db = "api/database/media.json";
+
 class MediaRepository {
   async index(course_id = null) {
     return new Promise((resolve, reject) => {
@@ -29,9 +32,15 @@ class MediaRepository {
     return new Promise((resolve, reject) => {
       form.parse(req, async function (err, fields, files) {
         if (err) console.error(err);
+        const course_id = fields.course_id;
+
+        if (course_id == "undefined") {
+          reject();
+          return;
+        }
 
         const userPath = files["file"].filepath;
-        const course_id = fields.course_id;
+
         const media_id = random_id();
         let media = await new MediaRepository().index(course_id);
         const media_path = `api/storage/media/course_${course_id}/media_${media_id}.jpg`;
@@ -61,9 +70,6 @@ class MediaRepository {
     });
   }
   async delete(media_id) {
-    var path = require("path"),
-      fs = require("fs");
-
     async function fromDir(startPath, filter) {
       //console.log('Starting from dir '+startPath+'/');
 
@@ -102,4 +108,4 @@ class MediaRepository {
   }
 }
 
-module.exports = MediaRepository;
+export default MediaRepository;

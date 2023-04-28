@@ -1,9 +1,11 @@
-const ProvinceRepository = require("../repositories/province");
+import ProvinceRepository from "../repositories/province";
 
-const router = require("express").Router();
+import express from "express";
+const router = express.Router();
 
 router.get("/index-provinces", async (req, res) => {
   res.send(await new ProvinceRepository().index());
 });
 
-module.exports = router
+
+export default router;

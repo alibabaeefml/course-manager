@@ -1,5 +1,5 @@
-const CourseModel = require("../models/course");
-const fs = require("fs");
+import CourseModel from "../models/course";
+import fs from "fs";
 const courses_path = "api/database/courses.json";
 class CourseRepository {
   async index(province_id = null) {
@@ -80,4 +80,4 @@ class CourseRepository {
   }
 }
 
-module.exports = CourseRepository;
+export default CourseRepository;

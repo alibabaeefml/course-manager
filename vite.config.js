@@ -6,6 +6,10 @@ import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
 import { defineConfig } from 'vite'
 import { fileURLToPath, URL } from 'node:url'
 
+// import mix to add api server
+import mix from 'vite-plugin-mix'
+
+
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
@@ -15,6 +19,9 @@ export default defineConfig({
     // https://github.com/vuetifyjs/vuetify-loader/tree/next/packages/vite-plugin
     vuetify({
       autoImport: true,
+    }),
+    mix({
+      handler: "./api/app.js",
     }),
   ],
   define: { 'process.env': {} },

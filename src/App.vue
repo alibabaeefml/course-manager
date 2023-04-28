@@ -26,21 +26,38 @@
           <v-divider></v-divider>
 
           <v-list density="compact" nav>
-            <v-list-item
-              prepend-icon="mdi-home-city"
-              title="Home"
-              value="home"
-            ></v-list-item>
-            <v-list-item
-              prepend-icon="mdi-account"
-              title="My Account"
-              value="account"
-            ></v-list-item>
-            <v-list-item
-              prepend-icon="mdi-account-group-outline"
-              title="Users"
-              value="users"
-            ></v-list-item>
+            <router-link to="/" class="text-decoration-none text-black">
+              <v-list-item
+                prepend-icon="mdi-earth-box"
+                title="نقشه"
+                value="home"
+                :active="useRoute().name == 'Home'"
+              ></v-list-item>
+            </router-link>
+
+            <router-link
+              :to="{name:'AddCourse'}"
+              class="text-decoration-none text-black"
+            >
+              <v-list-item
+                prepend-icon="mdi-google-classroom"
+                title="افزودن دوره"
+                value="home"
+                :active="useRoute().name == 'AddCourse'"
+              ></v-list-item>
+            </router-link>
+
+            <router-link
+              to="/add-participant"
+              class="text-decoration-none text-black"
+            >
+              <v-list-item
+                prepend-icon="mdi-account"
+                title="افزودن شرکت کننده"
+                value="home"
+                :active="useRoute().name == 'AddParticipant'"
+              ></v-list-item>
+            </router-link> 
           </v-list>
         </v-navigation-drawer>
         <v-main>
@@ -53,8 +70,9 @@
 
 <script setup>
 import { ref } from "vue";
+import { useRoute } from "vue-router";
 
-const drawer = true;
+const drawer = ref(true);
 const rail = ref(true);
 </script>
 

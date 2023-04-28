@@ -16,7 +16,6 @@ export const use_media_store = defineStore("media", () => {
 
   const create_media = async (media_data) => {
     const res = await axios.post(url("/create-media"), media_data);
-    console.log(res)
     media.value = res.data;
   };
 
@@ -25,11 +24,13 @@ export const use_media_store = defineStore("media", () => {
     media.value = res.data;
   };
 
+  const reset = () => (media.value = []);
   return {
     media,
     get_media,
     index_media,
     create_media,
     delete_media,
+    reset,
   };
 });

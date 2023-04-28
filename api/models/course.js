@@ -1,6 +1,6 @@
 const random_id = () => Math.floor(Math.random() * 615131613);
 
-module.exports = {
+export default {
   get(data) {
     return {
       id: data.id,

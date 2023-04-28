@@ -8,11 +8,11 @@ import { url } from "@/service/api";
 // the first argument is a unique id of the store across your application
 export const use_province_store = defineStore("province", () => {
   const provinces = ref([]);
+  const get_provinces = computed(() => provinces.value);
 
   const index_provinces = async () => {
     const res = await axios.get(url("/index-provinces"));
     provinces.value = res.data;
   };
-
-  return { provinces, index_provinces };
+  return { provinces, index_provinces, get_provinces };
 });

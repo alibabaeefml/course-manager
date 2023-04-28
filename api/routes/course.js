@@ -1,5 +1,6 @@
-const router = require("express").Router();
-const CourseRepository = require("../repositories/course");
+import express from "express";
+const router = express.Router();
+import CourseRepository from "../repositories/course";
 
 router.get("/index-course/:province_id", async (req, res) => {
   res.send(await new CourseRepository().index(req.params["province_id"]));
@@ -21,4 +22,5 @@ router.delete("/delete-course/:id", async (req, res) => {
   res.send(await new CourseRepository().delete(req.params["id"]));
 });
 
-module.exports = router;
+
+export default router;

@@ -1,4 +1,5 @@
 // Composables
+import { use_media_store } from "@/store/media";
 import { createRouter, createWebHistory } from "vue-router";
 
 const routes = [
@@ -17,7 +18,7 @@ const routes = [
         component: () => import("@/views/Login.vue"),
       },
       {
-        path: "/add-course/:province_id",
+        path: "/add-course/:province_id?",
         name: "AddCourse",
         meta: {
           name_fa: "افزودن دوره",
@@ -43,4 +44,9 @@ const router = createRouter({
   routes,
 });
 
+router.beforeEach((from) => {
+  if (from.name == "EditCourse") {
+    use_media_store().reset();
+  }
+});
 export default router;
