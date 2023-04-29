@@ -15,13 +15,7 @@ class MediaRepository {
         }
         let media = JSON.parse(res);
         if (course_id) {
-          let found_media = [];
-          media.map((v) =>
-            v.course_id == course_id ? found_media.push(v) : null
-          );
-          if (found_media.length) {
-            resolve(found_media);
-          }
+          resolve(media.filter((v) => v.course_id == course_id));
         }
         resolve(media);
       });
@@ -93,11 +87,8 @@ class MediaRepository {
     await fromDir("api/storage", `media_${media_id}.jpg`);
 
     let media = await this.index();
-    media.map((v) => {
-      if (v.id == media_id) {
-        media.splice(media.indexOf(v), 1);
-      }
-    });
+
+    media.splice(media.indexOf(media.find((v) => v.id == media_id)), 1);
 
     return new Promise((resolve, reject) => {
       fs.writeFile(media_db, JSON.stringify(media), (err, res) => {

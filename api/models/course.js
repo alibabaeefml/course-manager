@@ -7,17 +7,18 @@ export default {
       province_id: data.province_id,
       name: data.name,
       number: data.number,
-      members_quantity: data.members_quantity || null,
-      start_date: data.start_date || null,
-      finish_date: data.finish_date || null,
-      total_hours_participated_in: data.total_hours_participated_in || null,
+      members_quantity: data.members_quantity,
+      start_date: data.start_date,
+      finish_date: data.finish_date,
+      total_hours_participated_in: data.total_hours_participated_in ,
     };
   },
   set(data) {
     return {
       id: data.id || random_id(),
+      province_id: data.province_id,
       name: data.name,
-      number: data.number,
+      number: data.number || null,
       members_quantity: data.members_quantity || null,
       start_date: data.start_date || null,
       finish_date: data.finish_date || null,

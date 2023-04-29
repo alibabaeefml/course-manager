@@ -26,11 +26,12 @@ class CourseRepository {
   }
   async create(course_data = {}) {
     let courses = await this.index();
-    courses.push(CourseModel.set(course_data));
+    const new_course = CourseModel.set(course_data);
+    courses.push(new_course);
     return new Promise((resolve, reject) => {
       try {
         fs.writeFile(courses_path, JSON.stringify(courses), () => {
-          resolve(course_data);
+          resolve(new_course);
         });
       } catch (err) {
         reject(err);
@@ -39,9 +40,7 @@ class CourseRepository {
   }
   async show(course_id) {
     let courses = await this.index();
-    return courses.map((v) =>
-      v.id == course_id ? CourseModel.get(v) : null
-    )[0];
+    return courses.find((v) => (v.id == course_id ? CourseModel.get(v) : null));
   }
   async update(course_id, course_data) {
     let courses = await this.index();
@@ -56,6 +55,9 @@ class CourseRepository {
     });
     if (!found) {
       return `no course found by id ${course_id} to update!`;
+    }
+    if (!found.name) {
+      return `field name is necessary`;
     }
     return new Promise((resolve, reject) => {
       fs.writeFile(courses_path, JSON.stringify(courses), (err, res) => {

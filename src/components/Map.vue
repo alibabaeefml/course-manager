@@ -1,6 +1,6 @@
 <template>
   <div id="iran_map" style="width: 500px; height: 500px; margin: auto"></div>
-  <CoursesList :course_modal="course_modal"/>
+  <CoursesList :course_modal="course_modal" />
 </template>
 
 <script setup>
@@ -8,6 +8,7 @@ import { ref } from "vue";
 import CoursesList from "./CoursesList.vue";
 import { use_province_store as store } from "@/store/province";
 import { use_course_store } from "@/store/course";
+import { storeToRefs } from "pinia";
 
 const course_modal = ref({
   open: false,
@@ -48,7 +49,7 @@ $(() => {
         course_modal.value.data.subtitle = p.name_fa;
         course_modal.value.data.province_id = p.id;
         await use_course_store().index_courses(p.id);
-        course_modal.value.data.courses = use_course_store().courses;
+        course_modal.value.data.courses = use_course_store().get_courses;
       }
     });
   });
