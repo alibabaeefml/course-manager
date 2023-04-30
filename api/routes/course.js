@@ -1,6 +1,7 @@
 import express from "express";
 const router = express.Router();
 import CourseRepository from "../repositories/course";
+import { rimraf } from "rimraf";
 
 router.get("/index-course/:province_id", async (req, res) => {
   res.send(await new CourseRepository().index(req.params["province_id"]));
@@ -21,6 +22,5 @@ router.put("/update-course/:id", async (req, res) => {
 router.delete("/delete-course/:id", async (req, res) => {
   res.send(await new CourseRepository().delete(req.params["id"]));
 });
-
 
 export default router;

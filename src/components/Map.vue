@@ -9,7 +9,7 @@ import CoursesList from "./CoursesList.vue";
 import { use_province_store as store } from "@/store/province";
 import { use_course_store } from "@/store/course";
 import { storeToRefs } from "pinia";
-
+const { get_courses } = storeToRefs(use_course_store());
 const course_modal = ref({
   open: false,
   data: {
@@ -17,7 +17,7 @@ const course_modal = ref({
     subtitle: null,
     icon: "mdi-google-classroom",
     province_id: null,
-    courses: [],
+    courses: get_courses,
   },
 });
 
@@ -49,7 +49,7 @@ $(() => {
         course_modal.value.data.subtitle = p.name_fa;
         course_modal.value.data.province_id = p.id;
         await use_course_store().index_courses(p.id);
-        course_modal.value.data.courses = use_course_store().get_courses;
+        // course_modal.value.data.courses = use_course_store().get_courses;
       }
     });
   });

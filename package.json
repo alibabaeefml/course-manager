@@ -1,6 +1,6 @@
 {
   "name": "course-manager",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -19,6 +19,7 @@
     "formidable": "^2.1.1",
     "nodemon": "^2.0.22",
     "pinia": "^2.0.35",
+    "rimraf": "^5.0.0",
     "roboto-fontface": "*",
     "vue": "^3.2.38",
     "vue-router": "^4.0.0",

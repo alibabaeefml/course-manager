@@ -34,7 +34,7 @@
               style="gap: 1rem"
             >
               <span>مجموع ساعات شرکت شده در این دوره</span>
-              <span>{{ course.total_hours_participated_in }}</span>
+              <span>{{ course.total_hours_attended }}</span>
             </div>
           </v-card-text>
           <v-card-actions
@@ -53,7 +53,12 @@
               :to="{ name: 'EditCourse', params: { id: course.id } }"
             >
             </v-btn>
-            <v-btn icon="mdi-delete" color="red"> </v-btn>
+            <v-btn
+              icon="mdi-delete"
+              color="red"
+              @click="delete_course(course.id)"
+            >
+            </v-btn>
           </v-card-actions>
         </v-card>
       </div>
@@ -76,5 +81,9 @@
 
 <script setup>
 import Modal from "@/components/Modal.vue";
+import { use_course_store } from "@/store/course";
 const props = defineProps(["course_modal"]);
+const delete_course = async (id) => {
+  await use_course_store().delete_course(id);
+};
 </script>

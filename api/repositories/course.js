@@ -1,3 +1,4 @@
+import { rimraf } from "rimraf";
 import CourseModel from "../models/course";
 import fs from "fs";
 const courses_path = "api/database/courses.json";
@@ -73,7 +74,10 @@ class CourseRepository {
         courses.splice(courses.indexOf(v), 1);
       }
     });
+
     return new Promise((resolve, reject) => {
+      rimraf.sync(`api/storage/media/course_${course_id}`);
+
       fs.writeFile(courses_path, JSON.stringify(courses), (err, res) => {
         if (err) reject(err);
         resolve(courses);

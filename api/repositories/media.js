@@ -29,10 +29,10 @@ class MediaRepository {
         const course_id = fields.course_id;
 
         if (course_id == "undefined") {
-          reject();
+          reject('no course id provided');
           return;
         }
-
+        
         const userPath = files["file"].filepath;
 
         const media_id = random_id();

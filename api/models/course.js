@@ -10,7 +10,7 @@ export default {
       members_quantity: data.members_quantity,
       start_date: data.start_date,
       finish_date: data.finish_date,
-      total_hours_participated_in: data.total_hours_participated_in ,
+      total_hours_attended: data.total_hours_attended ,
     };
   },
   set(data) {
@@ -22,7 +22,9 @@ export default {
       members_quantity: data.members_quantity || null,
       start_date: data.start_date || null,
       finish_date: data.finish_date || null,
-      total_hours_participated_in: data.total_hours_participated_in || null,
+      total_hours_attended: data.total_hours_attended || null,
     };
   },
 };
+
+//[{a:2},{a:5}].map(v=>v.a + 1).reduce((a,b)=>a+b) course population

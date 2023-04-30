@@ -60,12 +60,12 @@
             label="مجموع ساعات شرکت شده در این دوره"
             color="orange"
             variant="underlined"
-            v-model="form.total_hours_participated_in"
+            v-model="form.total_hours_attended"
             @input="submit_change"
           >
           </v-text-field>
 
-          <Gallery :media="get_media" />
+          <Gallery :media="get_media" v-if="router.currentRoute.value.name == 'EditCourse'" />
         </v-card-text>
       </v-card>
     </v-form>
