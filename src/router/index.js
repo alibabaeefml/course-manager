@@ -35,6 +35,51 @@ const routes = [
         },
         component: () => import("@/views/AddEditCourse.vue"),
       },
+      {
+        path: "/add-attendant/:course_id",
+        name: "AddAttendant",
+        meta: {
+          name_fa: "افزودن شرکت کننده",
+          icon: "mdi-account-plus",
+        },
+        component: () => import("@/views/AddEditAttendant.vue"),
+      },
+      {
+        path: "/edit-attendant/:id",
+        name: "EditAttendant",
+        meta: {
+          name_fa: "ویرایش شرکت کننده",
+          icon: "mdi-account-edit",
+        },
+        component: () => import("@/views/AddEditAttendant.vue"),
+      },
+      {
+        path: "/teachers",
+        name: "Teachers",
+        meta: {
+          name_fa: "لیست استادها",
+          icon: "mdi-account-badge",
+        },
+        component: () => import("@/views/Teachers.vue"),
+      },
+      {
+        path: "/add-teacher",
+        name: "AddTeacher",
+        meta: {
+          name_fa: "افزودن استاد",
+          icon: "mdi-plus",
+        },
+        component: () => import("@/views/AddEditTeacher.vue"),
+      },
+      {
+        path: "/edit-course/:id",
+        name: "EditTeacher",
+        meta: {
+          name_fa: "ویرایش استاد",
+          icon: "mdi-pencil",
+        },
+        component: () => import("@/views/AddEditTeacher.vue"),
+      },
     ],
   },
 ];

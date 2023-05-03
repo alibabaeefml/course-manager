@@ -1,14 +1,14 @@
 <template>
   <Modal
-    :dialog="course_modal.open"
-    @closeModal="course_modal.open = false"
-    :data="course_modal.data"
+    :dialog="attendant_modal.open"
+    @closeModal="attendant_modal.open = false"
+    :data="attendant_modal.data"
   >
-    <div v-if="course_modal.data.courses.length">
-      <div v-for="course in course_modal.data.courses" :key="course.id">
+    <div v-if="get_attendants">
+      <div v-for="attendant in get_attendants" :key="attendant.id">
         <v-card
-          :title="course.name"
-          :subtitle="'شماره دوره: ' + course.number"
+          :title="attendant.name"
+          :subtitle="'شماره دوره: ' + attendant.course_number"
           class="mt-2"
         >
           <v-card-text
@@ -42,30 +42,15 @@
             style="gap: 1rem"
           >
             <v-btn
-              prepend-icon="mdi-account"
-              color="green"
-              @click="
-                openAttendantsListModal({
-                  course_id: course.id,
-                  course_number: course.number,
-                })
-              "
-            >
-              {{ course.members_quantity || 0 }}
-              <v-tooltip activator="parent" location="bottom"
-                >لیست شرکت کنندگان</v-tooltip
-              >
-            </v-btn>
-            <v-btn
               icon="mdi-pencil"
               color="orange"
-              :to="{ name: 'EditCourse', params: { id: course.id } }"
+              :to="{ name: 'EditAttendant', params: { id: attendant.id } }"
             >
             </v-btn>
             <v-btn
               icon="mdi-delete"
               color="red"
-              @click="delete_course(course.id)"
+              @click="delete_attendant(attendant.id)"
             >
             </v-btn>
           </v-card-actions>
@@ -73,7 +58,7 @@
       </div>
     </div>
     <div v-else>
-      <p>دوره ای برای نمایش وجود ندارد.</p>
+      <p>شرکت کننده ای برای نمایش وجود ندارد.</p>
     </div>
     <v-divider class="my-3"></v-divider>
     <v-btn
@@ -81,37 +66,23 @@
       icon="mdi-plus"
       color="primary"
       :to="{
-        name: 'AddCourse',
-        params: { province_id: course_modal.data.province_id },
+        name: 'AddAttendant',
+        params: { course_id: 'ddsvds' },
       }"
     ></v-btn>
   </Modal>
-  <AttendantsList :attendant_modal="attendant_modal" />
 </template>
 
 <script setup>
 import Modal from "@/components/Modal.vue";
-import { use_course_store } from "@/store/course";
-import AttendantsList from "./AttendantsList.vue";
+import { use_attendant_store as attendant_store } from "@/store/attendant";
+import { storeToRefs } from "pinia";
 import { ref } from "vue";
-
-const props = defineProps(["course_modal"]);
-const attendant_modal = ref({
-  open: false,
-  data: {
-    title: "لیست شرکت کنندگان",
-    subtitle: null,
-    icon: "mdi-account",
-    course_id: null,
-  },
-});
-
-const delete_course = async (id) => {
-  await use_course_store().delete_course(id);
+const { get_attendants } = storeToRefs(attendant_store);
+const props = defineProps(["attendant_modal"]);
+const index_attendant = async () => {
+  await attendant_store().index_attendants();
 };
-const openAttendantsListModal = async (data) => {
-  attendant_modal.value.data.course_id = data.id;
-  attendant_modal.value.data.subtitle = data.course_number;
-  attendant_modal.value.open = true;
-};
+index_attendant();
+const delete_attendant = async (id) => {};
 </script>

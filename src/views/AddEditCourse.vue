@@ -65,7 +65,10 @@
           >
           </v-text-field>
 
-          <Gallery :media="get_media" v-if="router.currentRoute.value.name == 'EditCourse'" />
+          <Gallery
+            :media="get_media"
+            v-if="router.currentRoute.value.name == 'EditCourse'"
+          />
         </v-card-text>
       </v-card>
     </v-form>

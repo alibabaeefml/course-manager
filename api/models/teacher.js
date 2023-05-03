@@ -1,3 +1,4 @@
+import CourseModel from "./course";
 const random_id = () => Math.floor(Math.random() * 615131613);
 
 export default {
@@ -20,7 +21,7 @@ export default {
       last_name: data.last_name,
       national_code: data.national_code,
       education: data.education || null,
-      courses_taught: data.courses_taught || [],
+      courses_taught: data.courses_taught.map((v) => CourseModel.get(v)) || [],
       total_hours_taught: data.total_hours_taught || 0,
       bank_account: data.bank_account || null,
     };

@@ -43,7 +43,7 @@ export default {
         data.over_two_year_old_children_quantity,
       phone_number: data.phone_number,
       attendance_time: data.attendance_time,
-      relatives: data.relatives.map((r) => RelativeModel.set(r)),
+      relatives: data.relatives.length ? data.relatives.map((r) => RelativeModel.set(r)) : [],
     };
   },
 };

@@ -29,35 +29,58 @@
             <router-link to="/" class="text-decoration-none text-black">
               <v-list-item
                 prepend-icon="mdi-earth-box"
+                value=""
                 title="نقشه"
-                value="home"
                 :active="useRoute().name == 'Home'"
               ></v-list-item>
             </router-link>
 
             <router-link
-              :to="{name:'AddCourse'}"
+              :to="{ name: 'AddCourse' }"
               class="text-decoration-none text-black"
             >
               <v-list-item
+                value=""
                 prepend-icon="mdi-google-classroom"
                 title="افزودن دوره"
-                value="home"
                 :active="useRoute().name == 'AddCourse'"
               ></v-list-item>
             </router-link>
 
             <router-link
-              to="/add-participant"
+              to="/add-attendant"
               class="text-decoration-none text-black"
             >
               <v-list-item
                 prepend-icon="mdi-account"
+                value=""
                 title="افزودن شرکت کننده"
-                value="home"
-                :active="useRoute().name == 'AddParticipant'"
+                :active="useRoute().name == 'AddAttendant'"
               ></v-list-item>
-            </router-link> 
+            </router-link>
+            <router-link to="/teachers" class="text-decoration-none text-black">
+              <v-list-item
+                prepend-icon="mdi-account-badge"
+                title="لیست اساتید"
+                value=""
+                :active="useRoute().name == 'AddTeacher'"
+              ></v-list-item>
+            </router-link>
+            <router-link
+              to="/add-teacher"
+              class="text-decoration-none text-black"
+            >
+              <v-list-item
+                prepend-icon="mdi-account-badge"
+                title="افزودن استاد"
+                value=""
+                :active="useRoute().name == 'AddTeacher'"
+              ></v-list-item>
+            </router-link>
+
+            <div v-if="!rail">
+              <v-img class="rounded-lg" src="./assets/logo.png"></v-img>
+            </div>
           </v-list>
         </v-navigation-drawer>
         <v-main>
@@ -73,7 +96,7 @@ import { ref } from "vue";
 import { useRoute } from "vue-router";
 
 const drawer = ref(true);
-const rail = ref(true);
+const rail = ref(false);
 </script>
 
 <style>
