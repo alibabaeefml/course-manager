@@ -3,6 +3,7 @@ import fs from "fs";
 const attendants_path = "api/database/attendants.json";
 class AttendantRepository {
   async index(course_id = null) {
+    console.log('dvjksdn')
     return new Promise((resolve, reject) => {
       fs.readFile(attendants_path, "utf8", async (err, res) => {
         if (err) {
@@ -21,7 +22,9 @@ class AttendantRepository {
   async create(attendant_data) {
     let attendants = await this.index();
     const new_attendant = AttendantModel.set(attendant_data);
-    attendants.push(new_attendant);
+    if (Object.values(new_attendant).find((v) => !v) !== undefined) {
+      attendants.push(new_attendant);
+    }
     return new Promise((resolve, reject) => {
       try {
         fs.writeFile(attendants_path, JSON.stringify(attendants), () => {
@@ -40,20 +43,17 @@ class AttendantRepository {
   }
   async update(attendant_id, attendant_data) {
     let attendants = await this.index();
-    let found = false;
-    attendants.map((v) => {
-      if (v.id == attendant_id) {
-        for (let item in attendant_data) {
-          v[item] = attendant_data[item];
-        }
-        found = v;
-      }
-    });
+    attendant_data = AttendantModel.set(attendant_data);
+    let found = attendants.find((v) => v.id == attendant_id);
     if (!found) {
-      return `no course found by id ${attendant_id} to update!`;
+      return `no attendant found by id ${attendant_id} to update!`;
     }
-    if (!found.name) {
-      return `field name is necessary`;
+    for (let item in attendant_data) {
+      if (found[item]) {
+        found[item] = attendant_data[item];
+      } else {
+        return;
+      }
     }
     return new Promise((resolve, reject) => {
       fs.writeFile(attendants_path, JSON.stringify(attendants), (err, res) => {
@@ -64,17 +64,12 @@ class AttendantRepository {
   }
   async delete(attendant_id) {
     let attendants = await this.index();
-    attendants.map((v) => {
-      if (v.id == attendant_id) {
-        attendants.splice(attendants.indexOf(v), 1);
-      }
-    });
-
+    let found = attendants.find((v) => v.id == attendant_id);
+    attendants.splice(attendants.indexOf(found), 1);
     return new Promise((resolve, reject) => {
-
       fs.writeFile(attendants_path, JSON.stringify(attendants), (err, res) => {
         if (err) reject(err);
-        resolve(attendants);
+        resolve(attendants.map((v) => AttendantModel.get(v)));
       });
     });
   }

@@ -1,7 +1,6 @@
 import express from "express";
 const router = express.Router();
 import CourseRepository from "../repositories/course";
-import { rimraf } from "rimraf";
 
 router.get("/index-course/:province_id", async (req, res) => {
   res.send(await new CourseRepository().index(req.params["province_id"]));
