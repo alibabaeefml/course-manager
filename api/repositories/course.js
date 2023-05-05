@@ -77,9 +77,11 @@ class CourseRepository {
   }
   async delete(course_id) {
     let courses = await this.index();
+    let deleted;
     courses.map((v) => {
       if (v.id == course_id) {
         courses.splice(courses.indexOf(v), 1);
+        deleted = v;
       }
     });
 
@@ -88,7 +90,7 @@ class CourseRepository {
 
       fs.writeFile(courses_path, JSON.stringify(courses), (err, res) => {
         if (err) reject(err);
-        resolve(courses);
+        resolve(deleted);
       });
     });
   }

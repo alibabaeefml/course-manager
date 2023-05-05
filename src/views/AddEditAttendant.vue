@@ -63,7 +63,7 @@
             color="green"
             variant="underlined"
             v-model="form.family_members"
-            @input="submit_change"
+            @input="submit_change()"
           >
           </v-text-field>
           <v-text-field
@@ -74,6 +74,12 @@
             @input="submit_change"
           >
           </v-text-field>
+          <v-alert
+            v-if="repetitive"
+            type="warning"
+            title="اخطار!"
+            text="کد ملی وارد شده تکراری است"
+          ></v-alert>
           <v-text-field
             label="تعداد فرزندان زیر 2 سال"
             color="green"
@@ -134,7 +140,7 @@
           </v-checkbox>
           <div class="d-flex align-center justify-space-between w-100">
             <h3>همراهان</h3>
-            <hr style="width: 85%;" />
+            <hr style="width: 85%" />
             <v-btn icon="mdi-plus" @click="add_relative"></v-btn>
           </div>
           <v-card
@@ -191,7 +197,7 @@ import { ref } from "vue";
 import { useRouter } from "vue-router";
 const router = useRouter();
 
-const form = ref({ relatives: [] });
+const form = ref({ is_primary: false, relatives: [] });
 const add_relative = async () => {
   form.value.relatives.push({
     name: "",
@@ -218,12 +224,22 @@ const delete_relative = (name) => {
   submit_change();
 };
 let timeout = ref(null);
-
+const repetitive = ref(false)
 const submit_change = () => {
   clearTimeout(timeout.value);
+
   timeout.value = setTimeout(async () => {
+    if (form.value.national_code) {
+      let res = await use_attendant_store().show_attendant_by_NC(
+        form.value.national_code
+      );
+      if (res) {
+        repetitive.value = true;
+      } else {
+        repetitive.value = false;
+      }
+    }
     if (router.currentRoute.value.name == "AddAttendant") {
-      console.log("dacjkds");
       let res = await use_attendant_store().create_attendant(form.value);
       form.value.id = res.id;
       if (res)

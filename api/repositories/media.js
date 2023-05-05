@@ -29,43 +29,49 @@ class MediaRepository {
         const course_id = fields.course_id;
 
         if (course_id == "undefined") {
-          reject('no course id provided');
+          reject("no course id provided");
           return;
         }
-        
-        const userPath = files["file"].filepath;
-
-        const media_id = random_id();
         let media = await new MediaRepository().index(course_id);
-        const media_path = `api/storage/media/course_${course_id}/media_${media_id}.jpg`;
 
-        try {
-          fs.mkdir(`api/storage/media/course_${course_id}`, (err, res) => null);
-        } catch (err) {}
-        // save a copy of user's file
-        fs.copyFile(userPath, media_path, function (err) {
-          if (err) {
-            reject(err);
-            return;
-          }
+        for (let item in files) {
+          const media_id = random_id();
+          const userPath = files[item].filepath;
+          const ext = files[item].originalFilename.split(".")[1];
+          const media_path = `api/storage/media/course_${course_id}/media_${
+            media_id + "." + ext
+          }`;
           media.push({
             id: media_id,
             course_id: course_id,
             src: "/" + media_path,
           });
-          fs.writeFile(media_db, JSON.stringify(media), async (err, res) => {
+          try {
+            fs.mkdir(
+              `api/storage/media/course_${course_id}`,
+              (err, res) => null
+            );
+          } catch (err) {}
+          // save a copy of user's file
+          fs.copyFile(userPath, media_path, function (err) {
             if (err) {
               reject(err);
+              return;
             }
-            resolve(media);
           });
+        }
+
+        fs.writeFile(media_db, JSON.stringify(media), async (err, res) => {
+          if (err) {
+            reject(err);
+          }
         });
+        resolve(media);
       });
     });
   }
   async delete(media_id) {
     async function fromDir(startPath, filter) {
-
       if (!fs.existsSync(startPath)) {
         return;
       }
@@ -82,7 +88,9 @@ class MediaRepository {
       }
     }
 
-    await fromDir("api/storage", `media_${media_id}.jpg`);
+    try {
+      await fromDir("api/storage", `media_${media_id}`);
+    } catch (e) {}
 
     let media = await this.index();
 

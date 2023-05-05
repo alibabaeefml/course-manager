@@ -11,7 +11,9 @@ class AttendantRepository {
         let attendants = JSON.parse(res);
         if (course_id) {
           resolve(
-            attendants.filter((v) => AttendantModel.get(v).course_id == course_id)
+            attendants.filter(
+              (v) => AttendantModel.get(v).course_id == course_id
+            )
           );
         } else {
           resolve(attendants.map((v) => AttendantModel.get(v)));
@@ -26,8 +28,11 @@ class AttendantRepository {
     if (Object.values(new_attendant).includes(undefined)) {
       return;
     }
+    let same_found = attendants.find(
+      (v) => v.national_code == attendant_data.national_code
+    );
     attendants.push(new_attendant);
-
+    new_attendant.repetitive = same_found;
     return new Promise((resolve, reject) => {
       try {
         fs.writeFile(attendants_path, JSON.stringify(attendants), () => {
@@ -44,6 +49,10 @@ class AttendantRepository {
       v.id == attendant_id ? AttendantModel.get(v) : null
     );
   }
+  async show_by_NC(NC) {
+    let attendants = await this.index();
+    return attendants.find((v) => v.national_code == NC);
+  }
   async update(attendant_id, attendant_data) {
     let attendants = await this.index();
     attendant_data = AttendantModel.set(attendant_data);
@@ -52,10 +61,10 @@ class AttendantRepository {
       return `no attendant found by id ${attendant_id} to update!`;
     }
     for (let item in attendant_data) {
-      if (found[item]) {
+      if (attendant_data[item] != undefined) {
         found[item] = attendant_data[item];
       } else {
-        return;
+        return "error";
       }
     }
     return new Promise((resolve, reject) => {

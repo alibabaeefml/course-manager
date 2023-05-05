@@ -14,6 +14,10 @@ router.get(`/show-attendant/:id`, async (req, res) => {
   res.send(await new attendantRepository().show(req.params["id"]));
 });
 
+router.get(`/show-attendant-by-NC/:NC`, async (req, res) => {
+  res.send(await new attendantRepository().show_by_NC(req.params["NC"]));
+});
+
 router.put("/update-attendant/:id", async (req, res) => {
   res.send(await new attendantRepository().update(req.params["id"], req.body));
 });

@@ -13,6 +13,8 @@
               id="fileinput"
               @change="submit_media"
               class="d-none"
+              accept=".jpg,.mp4"
+              multiple
             />
             <v-btn
               class="w-100 h-100"
@@ -39,12 +41,20 @@
               @click="store().delete_media(media_item.id)"
             ></v-btn>
             <v-img
+              v-if="media_item.src.split('.')[1] == 'jpg'"
               class="border rounded-lg"
               :src="media_item.src"
               cover
               width="100%"
               height="100%"
             ></v-img>
+            <video
+              v-if="media_item.src.split('.')[1] == 'mp4'"
+              :src="media_item.src"
+              class="w-100 h-100"
+              style="object-fit: cover"
+              controls
+            ></video>
           </v-col>
         </v-row>
       </v-card>
@@ -60,7 +70,12 @@ const props = defineProps(["media"]);
 const course_id = useRoute().params.id;
 const submit_media = async () => {
   const form = new FormData();
-  form.append("file", $("#fileinput").get(0).files[0]);
+
+  let to_upload_files = $("#fileinput").get(0).files;
+  for (let item in to_upload_files) {
+    form.append("file_" + item, to_upload_files[item]);
+  }
+
   form.append("course_id", course_id);
   await store().create_media(form);
   $("#fileinput").val("");

@@ -39,6 +39,10 @@ export const use_attendant_store = defineStore("attendant", () => {
     return res.status == 200;
   };
 
+  const show_attendant_by_NC = async (NC) => {
+    let res = await axios.get(url(`/show-attendant-by-NC/${NC}`));
+    return res.data;
+  };
   return {
     attendants,
     get_attendants,
@@ -47,5 +51,6 @@ export const use_attendant_store = defineStore("attendant", () => {
     show_attendant,
     delete_attendant,
     update_attendant,
+    show_attendant_by_NC,
   };
 });

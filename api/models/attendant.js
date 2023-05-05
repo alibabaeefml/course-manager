@@ -14,7 +14,7 @@ export default {
       personal_number: data.personal_number,
       national_code: data.national_code,
       department: data.department,
-      is_primary: data.is_primary,
+      is_primary: data.is_primary ? true : false,
       family_members: data.family_members,
       under_two_year_old_children_quantity:
         data.under_two_year_old_children_quantity,
@@ -39,7 +39,7 @@ export default {
       personal_number: data.personal_number,
       national_code: data.national_code,
       department: data.department,
-      is_primary: data.is_primary,
+      is_primary: data.is_primary ? 1 : 0,
       family_members: data.family_members,
       under_two_year_old_children_quantity:
         data.under_two_year_old_children_quantity,

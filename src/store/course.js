@@ -26,7 +26,7 @@ export const use_course_store = defineStore("course", () => {
 
   const delete_course = async (course_id) => {
     const res = await axios.delete(url(`/delete-course/${course_id}`));
-    courses.value = res.data;
+    courses.value.splice(courses.value.indexOf(res.data), 1);
   };
 
   const update_course = async (course_id, course_data) => {
