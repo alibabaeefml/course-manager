@@ -42,7 +42,7 @@
               <v-list-item
                 value=""
                 prepend-icon="mdi-google-classroom"
-                title="افزودن دوره"
+                title="ثبت دوره"
                 :active="useRoute().name == 'AddCourse'"
               ></v-list-item>
             </router-link>
@@ -54,14 +54,14 @@
               <v-list-item
                 prepend-icon="mdi-account"
                 value=""
-                title="افزودن شرکت کننده"
+                title="بانک اطلاعات شرکت کنندگان"
                 :active="useRoute().name == 'AddAttendant'"
               ></v-list-item>
             </router-link>
             <router-link to="/teachers" class="text-decoration-none text-black">
               <v-list-item
                 prepend-icon="mdi-account-badge"
-                title="لیست اساتید"
+                title="بانک اطلاعات اساتید"
                 value=""
                 :active="useRoute().name == 'AddTeacher'"
               ></v-list-item>
@@ -72,7 +72,7 @@
             >
               <v-list-item
                 prepend-icon="mdi-account-badge"
-                title="افزودن استاد"
+                title="ثبت مشخصات اساتید"
                 value=""
                 :active="useRoute().name == 'AddTeacher'"
               ></v-list-item>

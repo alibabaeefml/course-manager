@@ -7,11 +7,30 @@
         class="w-100"
       >
         <v-card-text>
+          <v-select
+            label="دوره"
+            :items="get_courses"
+            item-title="name"
+            item-value="id"
+            v-model="form.course_id"
+            color="orange"
+            variant="underlined"
+            @update:modelValue="submit_change"
+          >
+          </v-select>
           <v-text-field
-            label="درجه انتظامی"
+            label="درجه/رتبه"
             color="green"
             variant="underlined"
             v-model="form.police_rank"
+            @input="submit_change"
+          >
+          </v-text-field>
+          <v-text-field
+            label="یگان"
+            color="green"
+            variant="underlined"
+            v-model="form.department"
             @input="submit_change"
           >
           </v-text-field>
@@ -40,6 +59,14 @@
           >
           </v-text-field>
           <v-text-field
+            label="تعداد عائله"
+            color="green"
+            variant="underlined"
+            v-model="form.family_members"
+            @input="submit_change"
+          >
+          </v-text-field>
+          <v-text-field
             label="کد ملی"
             color="green"
             variant="underlined"
@@ -63,6 +90,17 @@
             @input="submit_change"
           >
           </v-text-field>
+          <v-select
+            label="استان"
+            :items="get_provinces"
+            item-title="name_fa"
+            item-value="id"
+            v-model="form.province_id"
+            color="orange"
+            variant="underlined"
+            @update:modelValue="submit_change"
+          >
+          </v-select>
           <v-text-field
             label="شهر"
             color="green"
@@ -91,15 +129,16 @@
             v-model="form.is_primary"
             label="کلانتری هدف"
             color="green"
+            @click="submit_change"
           >
           </v-checkbox>
           <div class="d-flex align-center justify-space-between w-100">
-            <h3>آشنایان</h3>
-            <hr style="width: 85%" />
+            <h3>همراهان</h3>
+            <hr style="width: 85%;" />
             <v-btn icon="mdi-plus" @click="add_relative"></v-btn>
           </div>
           <v-card
-            class="mt-3 pa-3 "
+            class="mt-3 pa-3"
             v-for="relative in form.relatives"
             :key="relative"
           >
@@ -144,9 +183,14 @@
   </v-container>
 </template>
 <script setup>
+import { use_attendant_store } from "@/store/attendant";
+import { use_course_store } from "@/store/course";
+import { use_province_store } from "@/store/province";
+import { storeToRefs } from "pinia";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 const router = useRouter();
+
 const form = ref({ relatives: [] });
 const add_relative = async () => {
   form.value.relatives.push({
@@ -155,10 +199,38 @@ const add_relative = async () => {
     attendance_time: "",
   });
 };
+const show = async () => {
+  let id = router.currentRoute.value.params.id;
+  form.value = await use_attendant_store().show_attendant(id);
+};
+if (router.currentRoute.value.name == "EditAttendant") {
+  show();
+}
+form.value.course_id = Number(router.currentRoute.value.params.course_id);
+use_course_store().index_courses();
+use_province_store().index_provinces();
+const { get_provinces } = storeToRefs(use_province_store());
+
+const { get_courses } = storeToRefs(use_course_store());
 const delete_relative = (name) => {
   let to_delete = form.value.relatives.find((v) => v.name == name);
   form.value.relatives.splice(form.value.relatives.indexOf(to_delete), 1);
+  submit_change();
 };
+let timeout = ref(null);
 
-const submit_change = () => {};
+const submit_change = () => {
+  clearTimeout(timeout.value);
+  timeout.value = setTimeout(async () => {
+    if (router.currentRoute.value.name == "AddAttendant") {
+      console.log("dacjkds");
+      let res = await use_attendant_store().create_attendant(form.value);
+      form.value.id = res.id;
+      if (res)
+        router.push({ name: "EditAttendant", params: { id: form.value.id } });
+    } else {
+      await use_attendant_store().update_attendant(form.value.id, form.value);
+    }
+  }, 200);
+};
 </script>

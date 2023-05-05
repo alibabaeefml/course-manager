@@ -21,7 +21,7 @@ const routes = [
         path: "/add-course/:province_id?",
         name: "AddCourse",
         meta: {
-          name_fa: "افزودن دوره",
+          name_fa: "ثبت دوره",
           icon: "mdi-plus",
         },
         component: () => import("@/views/AddEditCourse.vue"),
@@ -36,10 +36,10 @@ const routes = [
         component: () => import("@/views/AddEditCourse.vue"),
       },
       {
-        path: "/add-attendant/:course_id",
+        path: "/add-attendant/:course_id?",
         name: "AddAttendant",
         meta: {
-          name_fa: "افزودن شرکت کننده",
+          name_fa: "بانک اطلاعات شرکت کنندگان",
           icon: "mdi-account-plus",
         },
         component: () => import("@/views/AddEditAttendant.vue"),

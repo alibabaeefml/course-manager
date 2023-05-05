@@ -9,6 +9,7 @@ import { url } from "@/service/api";
 export const use_attendant_store = defineStore("attendant", () => {
   const attendants = ref([]);
   const get_attendants = computed(() => attendants.value);
+
   const index_attendants = async (course_id) => {
     const res = await axios.get(url(`/index-attendant/${course_id}`));
     attendants.value = res.data;

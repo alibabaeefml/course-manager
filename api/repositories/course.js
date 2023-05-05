@@ -10,6 +10,14 @@ class CourseRepository {
           fs.writeFile(courses_path, "[]", (err, res) => res);
         }
         let courses = JSON.parse(res);
+        courses.map((v) => {
+          let attendants = JSON.parse(
+            fs.readFileSync("api/database/attendants.json")
+          );
+          v.members_quantity = attendants.filter(
+            (a) => a.course_id == v.id
+          ).length;
+        });
         if (province_id) {
           let found_courses = [];
           courses.map((v) =>

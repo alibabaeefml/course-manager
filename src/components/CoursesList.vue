@@ -45,10 +45,7 @@
               prepend-icon="mdi-account"
               color="green"
               @click="
-                openAttendantsListModal({
-                  course_id: course.id,
-                  course_number: course.number,
-                })
+                openAttendantsListModal(course)
               "
             >
               {{ course.members_quantity || 0 }}
@@ -102,7 +99,7 @@ const attendant_modal = ref({
     title: "لیست شرکت کنندگان",
     subtitle: null,
     icon: "mdi-account",
-    course_id: null,
+    course: {},
   },
 });
 
@@ -110,7 +107,7 @@ const delete_course = async (id) => {
   await use_course_store().delete_course(id);
 };
 const openAttendantsListModal = async (data) => {
-  attendant_modal.value.data.course_id = data.id;
+  attendant_modal.value.data.course = data;
   attendant_modal.value.data.subtitle = data.course_number;
   attendant_modal.value.open = true;
 };

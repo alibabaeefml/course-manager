@@ -3,7 +3,6 @@ import fs from "fs";
 const attendants_path = "api/database/attendants.json";
 class AttendantRepository {
   async index(course_id = null) {
-    console.log('dvjksdn')
     return new Promise((resolve, reject) => {
       fs.readFile(attendants_path, "utf8", async (err, res) => {
         if (err) {
@@ -12,19 +11,23 @@ class AttendantRepository {
         let attendants = JSON.parse(res);
         if (course_id) {
           resolve(
-            attendants.filter((v) => AttendantModel.get(v).id == course_id)
+            attendants.filter((v) => AttendantModel.get(v).course_id == course_id)
           );
+        } else {
+          resolve(attendants.map((v) => AttendantModel.get(v)));
         }
-        resolve(attendants.map((v) => AttendantModel.get(v)));
       });
     });
   }
   async create(attendant_data) {
     let attendants = await this.index();
     const new_attendant = AttendantModel.set(attendant_data);
-    if (Object.values(new_attendant).find((v) => !v) !== undefined) {
-      attendants.push(new_attendant);
+
+    if (Object.values(new_attendant).includes(undefined)) {
+      return;
     }
+    attendants.push(new_attendant);
+
     return new Promise((resolve, reject) => {
       try {
         fs.writeFile(attendants_path, JSON.stringify(attendants), () => {

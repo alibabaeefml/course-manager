@@ -65,10 +65,8 @@ class MediaRepository {
   }
   async delete(media_id) {
     async function fromDir(startPath, filter) {
-      //console.log('Starting from dir '+startPath+'/');
 
       if (!fs.existsSync(startPath)) {
-        console.log("no dir ", startPath);
         return;
       }
 

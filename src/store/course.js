@@ -9,7 +9,7 @@ import { url } from "@/service/api";
 export const use_course_store = defineStore("course", () => {
   const courses = ref([]);
   const get_courses = computed(() => courses.value);
-  const index_courses = async (province_id) => {
+  const index_courses = async (province_id = "") => {
     const res = await axios.get(url(`/index-course/${province_id}`));
     courses.value = res.data;
   };
