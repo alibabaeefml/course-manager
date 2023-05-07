@@ -5,8 +5,7 @@ export default {
   get(data) {
     return {
       id: data.id,
-      first_name: data.first_name,
-      last_name: data.last_name,
+      name: data.name,
       national_code: data.national_code,
       education: data.education,
       courses_taught: data.courses_taught,
@@ -17,8 +16,7 @@ export default {
   set(data) {
     return {
       id: data.id || random_id(),
-      first_name: data.first_name,
-      last_name: data.last_name,
+      name: data.name,
       national_code: data.national_code,
       education: data.education || null,
       courses_taught: data.courses_taught.map((v) => CourseModel.get(v)) || [],

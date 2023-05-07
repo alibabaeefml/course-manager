@@ -16,6 +16,7 @@ export const use_teacher_store = defineStore("teacher", () => {
 
   const create_teacher = async (teacher_data) => {
     const res = await axios.post(url("/create-teacher"), teacher_data);
+    teachers.value.push(res.data);
     return res.data;
   };
 

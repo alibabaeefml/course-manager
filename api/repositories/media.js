@@ -37,9 +37,10 @@ class MediaRepository {
         for (let item in files) {
           const media_id = random_id();
           const userPath = files[item].filepath;
-          const ext = files[item].originalFilename.split(".")[1];
+          const ext = () =>
+            files[item].originalFilename.includes("mp4") ? ".mp4" : ".jpg";
           const media_path = `api/storage/media/course_${course_id}/media_${
-            media_id + "." + ext
+            media_id + ext()
           }`;
           media.push({
             id: media_id,
@@ -83,7 +84,7 @@ class MediaRepository {
         if (stat.isDirectory()) {
           fromDir(filename, filter); //recurse
         } else if (filename.includes(filter)) {
-          fs.unlinkSync(filename);
+         fs.unlinkSync(filename);
         }
       }
     }

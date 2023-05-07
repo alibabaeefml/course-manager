@@ -12,6 +12,7 @@ router.post("/create-media", async (req, res) => {
 
 router.delete("/delete-media/:id", async (req, res) => {
   res.send(await new MediaRepository().delete(req.params["id"]));
+  express()
 });
 
 export default router;

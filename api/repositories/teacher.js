@@ -6,8 +6,9 @@ class TeacherRepository {
     return new Promise((resolve, reject) => {
       fs.readFile(teachers_path, "utf8", async (err, res) => {
         if (err) {
-          fs.writeFile(teachers_path, JSON.stringify("[]"), (err, res) => res);
+          fs.writeFile(teachers_path, "[]", (err, res) => res);
         }
+        console.log(res)
         let teachers = JSON.parse(res);
         resolve(teachers.map((v) => TeacherModel.get(v)));
       });

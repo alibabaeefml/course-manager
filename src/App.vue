@@ -63,7 +63,7 @@
                 prepend-icon="mdi-account-badge"
                 title="بانک اطلاعات اساتید"
                 value=""
-                :active="useRoute().name == 'AddTeacher'"
+                :active="useRoute().name == 'Teachers'"
               ></v-list-item>
             </router-link>
             <router-link

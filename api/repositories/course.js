@@ -1,6 +1,7 @@
 import { rimraf } from "rimraf";
 import CourseModel from "../models/course";
 import fs from "fs";
+import AttendantRepository from "./attendant";
 const courses_path = "api/database/courses.json";
 class CourseRepository {
   async index(province_id = null) {
@@ -84,7 +85,14 @@ class CourseRepository {
         deleted = v;
       }
     });
-
+    let attendant_repo = new AttendantRepository();
+    let attendants = await attendant_repo
+      .index()
+      .filter((v) => v.course_id != course_id);
+    fs.writeFileSync(
+      "api/database/attendants.json",
+      JSON.stringify(attendants)
+    );
     return new Promise((resolve, reject) => {
       rimraf.sync(`api/storage/media/course_${course_id}`);
 
