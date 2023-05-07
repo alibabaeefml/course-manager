@@ -8,7 +8,6 @@ class TeacherRepository {
         if (err) {
           fs.writeFile(teachers_path, "[]", (err, res) => res);
         }
-        console.log(res)
         let teachers = JSON.parse(res);
         resolve(teachers.map((v) => TeacherModel.get(v)));
       });
@@ -17,6 +16,7 @@ class TeacherRepository {
   async create(teacher_data) {
     let teachers = await this.index();
     const new_teacher = TeacherModel.set(teacher_data);
+
     if (Object.values(new_teacher).find((v) => !v) !== undefined) {
       teachers.push(new_teacher);
     }
@@ -39,16 +39,18 @@ class TeacherRepository {
   async update(teacher_id, teacher_data) {
     let teachers = await this.index();
     teacher_data = TeacherModel.set(teacher_data);
+
     let found = teachers.find((v) => v.id == teacher_id);
+
     if (!found) {
       return `no teacher found by id ${teacher_id} to update!`;
     }
-    for (let item in teacher_data) {
-      if (found[item]) {
+    if (found.name && found.national_code) {
+      for (let item in teacher_data) {
         found[item] = teacher_data[item];
-      } else {
-        return;
       }
+    } else {
+      return;
     }
     return new Promise((resolve, reject) => {
       fs.writeFile(teachers_path, JSON.stringify(teachers), (err, res) => {

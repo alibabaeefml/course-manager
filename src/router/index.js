@@ -72,7 +72,7 @@ const routes = [
         component: () => import("@/views/AddEditTeacher.vue"),
       },
       {
-        path: "/edit-course/:id",
+        path: "/edit-teacher/:id",
         name: "EditTeacher",
         meta: {
           name_fa: "ویرایش استاد",

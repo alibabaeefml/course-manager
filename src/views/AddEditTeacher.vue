@@ -9,12 +9,14 @@
         variant="underlined"
         v-model="form.name"
         @input="submit_change"
+        :rules="[(v) => isNaN(v) || 'نام استاد نباید شماره باشد!']"
       ></v-text-field>
       <v-text-field
         label="کد ملی"
         variant="underlined"
         v-model="form.national_code"
         @input="submit_change"
+        :rules="[(v) => !isNaN(v) || 'فقط شماره مجاز است']"
       ></v-text-field>
       <v-select
         label="تحصیلات"
@@ -58,7 +60,6 @@
       ></v-text-field>
     </v-card-text>
   </v-card>
-  
 </template>
 <script setup>
 import { use_course_store } from "@/store/course";
@@ -74,6 +75,15 @@ const form = ref({});
 use_course_store().index_courses();
 const { get_courses } = storeToRefs(use_course_store());
 
+const show_teacher = async () => {
+  if (router.currentRoute.value.name == "EditTeacher") {
+    let teacher = await use_teacher_store().show_teacher(
+      router.currentRoute.value.params.id
+    );
+    form.value = teacher;
+  }
+};
+show_teacher()
 let timeout = ref(null);
 
 const submit_change = () => {
@@ -83,10 +93,10 @@ const submit_change = () => {
       if (router.currentRoute.value.name == "AddTeacher") {
         const teacher = await use_teacher_store().create_teacher(form.value);
         teacher
-          ? router.push({ name: "EditCourse", params: { id: teacher.id } })
+          ? router.push({ name: "EditTeacher", params: { id: teacher.id } })
           : null;
       } else {
-        await use_teacher_store().update_teacher(form.value);
+        await use_teacher_store().update_teacher(form.value.id ,form.value);
       }
     }
   }, 200);
