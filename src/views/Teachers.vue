@@ -5,7 +5,6 @@
       :title="router.currentRoute.value.meta.name_fa"
       class="ma-2 pa-3 w-100"
     >
-      {{ get_teachers }}
       <v-card class="pa-3" v-for="teacher in get_teachers" :key="teacher.id">
         <v-card-text>
           <div class="d-flex justify-space-between align-center">
@@ -29,7 +28,7 @@
           </div>
           <hr class="my-5" />
           <div class="d-flex justify-space-between align-center">
-            <h3>دوره های تدریس شده:</h3>
+            <h3>شماره دوره های تدریس شده:</h3>
             <h3>{{ teacher.courses_taught }}</h3>
           </div>
           <hr class="my-5" />

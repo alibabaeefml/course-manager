@@ -83,7 +83,7 @@ const show_teacher = async () => {
     form.value = teacher;
   }
 };
-show_teacher()
+show_teacher();
 let timeout = ref(null);
 
 const submit_change = () => {

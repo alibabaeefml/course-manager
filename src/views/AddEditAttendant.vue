@@ -233,7 +233,7 @@ const submit_change = () => {
       let res = await use_attendant_store().show_attendant_by_NC(
         form.value.national_code
       );
-      if (res) {
+      if (res.id != form.value.id) {
         repetitive.value = true;
       } else {
         repetitive.value = false;

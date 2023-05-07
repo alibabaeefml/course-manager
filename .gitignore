@@ -1,8 +1,8 @@
 .DS_Store
 node_modules
 /dist
-
-
+api/storage/media
+api/database
 # local env files
 .env.local
 .env.*.local
