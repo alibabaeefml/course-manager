@@ -86,9 +86,9 @@ class CourseRepository {
       }
     });
     let attendant_repo = new AttendantRepository();
-    let attendants = await attendant_repo
-      .index()
-      .filter((v) => v.course_id != course_id);
+    let attendants = (await attendant_repo.index()).filter(
+      (v) => v.course_id != course_id
+    );
     fs.writeFileSync(
       "api/database/attendants.json",
       JSON.stringify(attendants)

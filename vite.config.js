@@ -38,9 +38,5 @@ export default defineConfig({
       '.tsx',
       '.vue',
     ],
-  },
-  server: {
-    host:"localhost",
-    port: 3000,
-  },
+  }
 })
