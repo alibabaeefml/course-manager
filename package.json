@@ -6,8 +6,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "lint": "eslint . --fix --ignore-path .gitignore",
-    "api": "nodemon api/app.js",
-    "app": "concurrently \"start http://localhost:3000\" \"npm run api\" \"npm run dev\""
+    "app": "concurrently \"npm run dev\" \"start http://127.0.0.1:3000\" "
   },
   "dependencies": {
     "@mdi/font": "7.0.96",
