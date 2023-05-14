@@ -7,31 +7,60 @@
         class="w-100"
       >
         <v-card-text>
-          <v-select
-            label="دوره"
+          <v-autocomplete
+            label="انتخاب دوره"
             :items="get_courses"
-            item-title="name"
             item-value="id"
-            v-model="form.course_id"
-            color="orange"
+            item-title="number"
             variant="underlined"
+            v-model="form.course_id"
             @update:modelValue="submit_change"
           >
-          </v-select>
+            <template #selection="{ item }" >
+              <div class="d-flex align-items-center" style="gap: 5px" v-if="item.raw">
+                <span>{{ item.raw.name }}</span>
+                <span style="font-size: small"
+                  >({{ "شماره دوره " + item.raw.number }})</span
+                >
+                <span style="font-size: small"
+                  >({{
+                    "استان " +
+                        get_provinces.find((v) => v.id == item.raw.province_id)
+                          ?.name_fa
+                  }})</span
+                >
+              </div>
+              <div v-else>انتخاب کنید</div>
+            </template>
+          </v-autocomplete>
+          <v-text-field
+            label="شهر"
+            color="green"
+            variant="underlined"
+            v-model="form.city"
+            @input="submit_change"
+            :rules="[(v) => isNaN(v) || 'باید شهر باشد']"
+          >
+          </v-text-field>
           <v-text-field
             label="درجه/رتبه"
             color="green"
             variant="underlined"
             v-model="form.police_rank"
             @input="submit_change"
+            :rules="[(v) => isNaN(v) || 'باید درجه یا رتبه باشد']"
+            hint="مثال: سرهنگ 2"
           >
           </v-text-field>
+
           <v-text-field
             label="یگان"
             color="green"
             variant="underlined"
             v-model="form.department"
             @input="submit_change"
+            :rules="[(v) => isNaN(v) || 'باید یگان باشد']"
+            hint="مثال: یگان ویژه"
           >
           </v-text-field>
           <v-text-field
@@ -40,6 +69,7 @@
             variant="underlined"
             v-model="form.first_name"
             @input="submit_change"
+            :rules="[(v) => isNaN(v) || 'باید از حروف الفبا باشد']"
           >
           </v-text-field>
           <v-text-field
@@ -48,6 +78,7 @@
             variant="underlined"
             v-model="form.last_name"
             @input="submit_change"
+            :rules="[(v) => isNaN(v) || 'باید از حروف الفبا باشد']"
           >
           </v-text-field>
           <v-text-field
@@ -56,6 +87,7 @@
             variant="underlined"
             v-model="form.personal_number"
             @input="submit_change"
+            :rules="[(v) => !isNaN(v) || 'باید شماره باشد']"
           >
           </v-text-field>
           <v-text-field
@@ -64,6 +96,7 @@
             variant="underlined"
             v-model="form.family_members"
             @input="submit_change()"
+            type="number"
           >
           </v-text-field>
           <v-text-field
@@ -72,6 +105,8 @@
             variant="underlined"
             v-model="form.national_code"
             @input="submit_change"
+            maxlength="10"
+            :rules="[(v) => !isNaN(v) || 'باید شماره باشد']"
           >
           </v-text-field>
           <v-alert
@@ -86,6 +121,7 @@
             variant="underlined"
             v-model="form.under_two_year_old_children_quantity"
             @input="submit_change"
+            type="number"
           >
           </v-text-field>
           <v-text-field
@@ -94,33 +130,19 @@
             variant="underlined"
             v-model="form.over_two_year_old_children_quantity"
             @input="submit_change"
+            type="number"
           >
           </v-text-field>
-          <v-select
-            label="استان"
-            :items="get_provinces"
-            item-title="name_fa"
-            item-value="id"
-            v-model="form.province_id"
-            color="orange"
-            variant="underlined"
-            @update:modelValue="submit_change"
-          >
-          </v-select>
-          <v-text-field
-            label="شهر"
-            color="green"
-            variant="underlined"
-            v-model="form.city"
-            @input="submit_change"
-          >
-          </v-text-field>
+
           <v-text-field
             label="شماره همراه"
             color="green"
             variant="underlined"
             v-model="form.phone_number"
             @input="submit_change"
+            :rules="[(v) => (v[0] == 0 && v[1] == 9) || 'باید شماره باشد']"
+            maxlength="11"
+            hint="فرمت صحیح: 09000000000"
           >
           </v-text-field>
           <v-text-field
@@ -129,6 +151,7 @@
             variant="underlined"
             v-model="form.attendance_time"
             @input="submit_change"
+            type="number"
           >
           </v-text-field>
           <v-checkbox
@@ -138,6 +161,8 @@
             @click="submit_change"
           >
           </v-checkbox>
+          
+          
           <div class="d-flex align-center justify-space-between w-100">
             <h3>همراهان</h3>
             <hr style="width: 85%" />
@@ -154,6 +179,7 @@
               variant="underlined"
               v-model="relative.name"
               @input="submit_change"
+              :rules="[(v) => isNaN(v) || 'باید از حروف الفبا باشد']"
             >
             </v-text-field>
             <v-text-field
@@ -162,6 +188,8 @@
               variant="underlined"
               v-model="relative.relation"
               @input="submit_change"
+              :rules="[(v) => isNaN(v) || 'باید نسبت باشد']"
+              hint="مانند مادر، همسر، ..."
             >
             </v-text-field>
             <v-text-field
@@ -171,8 +199,10 @@
               v-model="relative.attendance_time"
               :rules="[(v) => !isNaN(v) || 'باید شماره باشد']"
               @input="submit_change"
+              type="number"
             >
             </v-text-field>
+
             <v-card-actions class="d-flex justify-end">
               <v-btn
                 @click="delete_relative(relative.name)"
@@ -192,6 +222,7 @@
 import { use_attendant_store } from "@/store/attendant";
 import { use_course_store } from "@/store/course";
 import { use_province_store } from "@/store/province";
+
 import { storeToRefs } from "pinia";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
@@ -214,17 +245,19 @@ if (router.currentRoute.value.name == "EditAttendant") {
 }
 form.value.course_id = Number(router.currentRoute.value.params.course_id);
 use_course_store().index_courses();
+
+const { get_courses } = storeToRefs(use_course_store());
+
 use_province_store().index_provinces();
 const { get_provinces } = storeToRefs(use_province_store());
 
-const { get_courses } = storeToRefs(use_course_store());
 const delete_relative = (name) => {
   let to_delete = form.value.relatives.find((v) => v.name == name);
   form.value.relatives.splice(form.value.relatives.indexOf(to_delete), 1);
   submit_change();
 };
 let timeout = ref(null);
-const repetitive = ref(false)
+const repetitive = ref(false);
 const submit_change = () => {
   clearTimeout(timeout.value);
 

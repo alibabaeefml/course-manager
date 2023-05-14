@@ -15,10 +15,36 @@ class CourseRepository {
           let attendants = JSON.parse(
             fs.readFileSync("api/database/attendants.json")
           );
-          v.members_quantity = attendants.filter(
-            (a) => a.course_id == v.id
-          ).length;
+          let rel_atts = attendants.filter((a) => a.course_id == v.id);
+
+          v.members_quantity = rel_atts.length;
+
+          try {
+            if (rel_atts.length) {
+              let att_times = rel_atts.map((a) =>
+                a.attendance_time ? Number(a.attendance_time) : 0
+              );
+
+              let relative_times = [];
+              rel_atts.map((a) => {
+                if (a.relatives.length) {
+                  a.relatives.map((r) =>
+                    relative_times.push(
+                      r.attendance_time ? Number(r.attendance_time) : 0
+                    )
+                  );
+                }
+              });
+
+              v.total_hours_attended = att_times
+                .concat(relative_times)
+                .reduce((a, b) => a + b);
+            }
+          } catch (e) {
+            console.log(e);
+          }
         });
+
         if (province_id) {
           let found_courses = [];
           courses.map((v) =>

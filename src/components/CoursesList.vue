@@ -34,7 +34,7 @@
               style="gap: 1rem"
             >
               <span>مجموع ساعات شرکت شده در این دوره</span>
-              <span>{{ course.total_hours_attended }}</span>
+              <span>{{ course.total_hours_attended || 0}}</span>
             </div>
           </v-card-text>
           <v-card-actions

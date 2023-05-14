@@ -11,6 +11,7 @@
             label="نام دوره"
             color="orange"
             variant="underlined"
+            :rules="[(v) => isNaN(v) || 'باید از حروف الفبا باشد']"
             v-model="form.name"
             @input="submit_change"
           >
@@ -23,6 +24,7 @@
           ></v-alert>
           <v-text-field
             label="شماره دوره"
+            :rules="[(v) => !isNaN(v) || 'باید شماره باشد']"
             color="orange"
             variant="underlined"
             v-model="form.number"
@@ -40,30 +42,57 @@
             @update:modelValue="submit_change"
           >
           </v-select>
-          <v-text-field
+          <!-- <v-text-field
             label="تاریخ شروع دوره"
             color="orange"
             variant="underlined"
             v-model="form.start_date"
             @input="submit_change"
+            :rules="[
+              (v) =>
+                (v.split('/').length == 3 &&
+                  v.split('/')[0].length == 4 &&
+                  v.split('/')[1].length == 2 &&
+                  v.split('/')[1] <= 12 &&
+                  v.split('/')[2].length == 2 &&
+                  v.split('/')[2] <= 31) ||
+                'باید تاریخ باشد',
+            ]"
+            hint="فرمت صحیح: 0000/00/00"
           >
-          </v-text-field>
-          <v-text-field
+          </v-text-field> -->
+          <date-picker
+            @change="submit_change"
+            label="تاریخ شروع دوره"
+            v-model="form.start_date"
+            color="orange"
+          ></date-picker>
+          <br />
+          <date-picker
+            @change="submit_change"
+            label="تاریخ پایان دوره"
+            v-model="form.finish_date"
+            color="orange"
+          ></date-picker>
+          <!-- <v-text-field
             label="تاریخ پایان دوره"
             color="orange"
             variant="underlined"
             v-model="form.finish_date"
             @input="submit_change"
+            :rules="[
+              (v) =>
+                (v.split('/').length == 3 &&
+                  v.split('/')[0].length == 4 &&
+                  v.split('/')[1].length == 2 &&
+                  v.split('/')[1] <= 12 &&
+                  v.split('/')[2].length == 2 &&
+                  v.split('/')[2] <= 31) ||
+                'باید تاریخ باشد',
+            ]"
+            hint="فرمت صحیح: 0000/00/00"
           >
-          </v-text-field>
-          <v-text-field
-            label="مجموع ساعات شرکت شده در این دوره"
-            color="orange"
-            variant="underlined"
-            v-model="form.total_hours_attended"
-            @input="submit_change"
-          >
-          </v-text-field>
+          </v-text-field> -->
 
           <Gallery
             :media="get_media"
