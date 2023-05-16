@@ -8,13 +8,23 @@
       <v-card class="pa-3" v-for="teacher in get_teachers" :key="teacher.id">
         <v-card-text>
           <div class="d-flex justify-space-between align-center">
-            <h3>نام:</h3>
+            <h3>نام و نام خانوادگی:</h3>
             <h3>{{ teacher.name }}</h3>
           </div>
           <hr class="my-5" />
           <div class="d-flex justify-space-between align-center">
             <h3>کد ملی:</h3>
             <h3>{{ teacher.national_code }}</h3>
+          </div>
+          <hr class="my-5" />
+          <div class="d-flex justify-space-between align-center">
+            <h3>عنوان / رتبه:</h3>
+            <h3>{{ teacher.title }}</h3>
+          </div>
+          <hr class="my-5" />
+          <div class="d-flex justify-space-between align-center">
+            <h3>سمت:</h3>
+            <h3>{{ teacher.position }}</h3>
           </div>
           <hr class="my-5" />
           <div class="d-flex justify-space-between align-center">

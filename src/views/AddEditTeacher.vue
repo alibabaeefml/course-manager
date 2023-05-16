@@ -5,7 +5,7 @@
   >
     <v-card-text>
       <v-text-field
-        label="نام"
+        label="نام و نام خانوادگی"
         variant="underlined"
         v-model="form.name"
         @input="submit_change"
@@ -25,6 +25,16 @@
         v-model="form.education"
         @update:modelValue="submit_change"
       ></v-select>
+      <v-select
+        label="عنوان / رتبه"
+        :items="['استاد', 'حجت الاسلام و المسلمین', 'آیت الله']"
+        variant="underlined"
+        v-model="form.title"
+        @update:modelValue="submit_change"
+      ></v-select>
+      <v-text-field label="سمت" variant="underlined" v-model="form.position">
+        
+      </v-text-field>
       <v-autocomplete
         label="دوره های تدریس شده"
         :items="get_courses"

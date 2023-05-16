@@ -11,6 +11,8 @@ export default {
       courses_taught: data.courses_taught,
       total_hours_taught: data.total_hours_taught,
       bank_account: data.bank_account,
+      title:data.title,
+      position:data.position
     };
   },
   set(data) {
@@ -22,6 +24,8 @@ export default {
       courses_taught: data.courses_taught || [],
       total_hours_taught: data.total_hours_taught || 0,
       bank_account: data.bank_account || null,
+      title:data.title,
+      position:data.position
     };
   },
 };

@@ -3,13 +3,17 @@
     :dialog="attendant_modal.open"
     @closeModal="attendant_modal.open = false"
     :data="attendant_modal.data"
+    
   >
-    <div v-if="get_attendants">
+    <div v-if="get_attendants" >
       <div v-for="attendant in get_attendants" :key="attendant.id">
         <v-card
           :title="attendant.first_name + ' ' + attendant.last_name"
           :subtitle="'درجه/رتبه: ' + attendant.police_rank"
           class="mt-2"
+          :height="!hover ? 180 : '100%'"
+          onmouseenter="this.style.height='100%'"
+          onmouseleave="this.style.height='180px'"
         >
           <v-card-text
             class="d-flex flex-column align-center"
@@ -40,8 +44,10 @@
               class="d-flex align-cennter justify-space-between w-100"
               style="gap: 1rem"
             >
-              <span>شهر:</span>
-              <span>{{ attendant.city }}</span>
+              <span>استان محل سکونت:</span>
+              <span>{{
+                get_provinces.find((v) => v.id == attendant.province_id).name_fa
+              }}</span>
             </div>
 
             <div
@@ -138,7 +144,9 @@
 <script setup>
 import Modal from "@/components/Modal.vue";
 import { use_attendant_store as attendant_store } from "@/store/attendant";
+import { use_province_store } from "@/store/province";
 import { storeToRefs } from "pinia";
+import { ref } from "vue";
 import { watch } from "vue";
 const { get_attendants } = storeToRefs(attendant_store());
 const props = defineProps(["attendant_modal"]);
@@ -152,8 +160,11 @@ const index_attendant = async () => {
 watch(props.attendant_modal, () => {
   if (props.attendant_modal.open == true) index_attendant();
 });
+
+const { get_provinces } = storeToRefs(use_province_store());
 // index_attendant();
 const delete_attendant = async (id) => {
   await attendant_store().delete_attendant(id);
 };
+const hover = ref(false)
 </script>

@@ -42,25 +42,7 @@
             @update:modelValue="submit_change"
           >
           </v-select>
-          <!-- <v-text-field
-            label="تاریخ شروع دوره"
-            color="orange"
-            variant="underlined"
-            v-model="form.start_date"
-            @input="submit_change"
-            :rules="[
-              (v) =>
-                (v.split('/').length == 3 &&
-                  v.split('/')[0].length == 4 &&
-                  v.split('/')[1].length == 2 &&
-                  v.split('/')[1] <= 12 &&
-                  v.split('/')[2].length == 2 &&
-                  v.split('/')[2] <= 31) ||
-                'باید تاریخ باشد',
-            ]"
-            hint="فرمت صحیح: 0000/00/00"
-          >
-          </v-text-field> -->
+         
           <date-picker
             @change="submit_change"
             label="تاریخ شروع دوره"
@@ -74,25 +56,7 @@
             v-model="form.finish_date"
             color="orange"
           ></date-picker>
-          <!-- <v-text-field
-            label="تاریخ پایان دوره"
-            color="orange"
-            variant="underlined"
-            v-model="form.finish_date"
-            @input="submit_change"
-            :rules="[
-              (v) =>
-                (v.split('/').length == 3 &&
-                  v.split('/')[0].length == 4 &&
-                  v.split('/')[1].length == 2 &&
-                  v.split('/')[1] <= 12 &&
-                  v.split('/')[2].length == 2 &&
-                  v.split('/')[2] <= 31) ||
-                'باید تاریخ باشد',
-            ]"
-            hint="فرمت صحیح: 0000/00/00"
-          >
-          </v-text-field> -->
+      
 
           <Gallery
             :media="get_media"

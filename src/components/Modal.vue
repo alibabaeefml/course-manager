@@ -1,6 +1,6 @@
 <template>
   <div class="text-center">
-    <v-dialog :width="data.width || 600" v-model="dialog" scrollable >
+    <v-dialog :width="data.width || 750" v-model="dialog" scrollable >
       <v-card
         :title="data.title || 'عنوان مدال'"
         :subtitle="data.subtitle || 'زیر عنوان مدال'"

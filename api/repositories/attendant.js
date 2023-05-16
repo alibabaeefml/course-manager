@@ -24,15 +24,13 @@ class AttendantRepository {
   async create(attendant_data) {
     let attendants = await this.index();
     const new_attendant = AttendantModel.set(attendant_data);
-
+    
     if (Object.values(new_attendant).includes(undefined)) {
+      console.log('problem')
       return;
     }
-    let same_found = attendants.find(
-      (v) => v.national_code == attendant_data.national_code
-    );
+
     attendants.push(new_attendant);
-    new_attendant.repetitive = same_found;
     return new Promise((resolve, reject) => {
       try {
         fs.writeFile(attendants_path, JSON.stringify(attendants), () => {
@@ -57,9 +55,11 @@ class AttendantRepository {
     let attendants = await this.index();
     attendant_data = AttendantModel.set(attendant_data);
     let found = attendants.find((v) => v.id == attendant_id);
+
     if (!found) {
       return `no attendant found by id ${attendant_id} to update!`;
     }
+
     for (let item in attendant_data) {
       if (attendant_data[item] != undefined) {
         found[item] = attendant_data[item];

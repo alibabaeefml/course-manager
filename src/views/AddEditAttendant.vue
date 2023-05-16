@@ -33,15 +33,17 @@
               <div v-else>انتخاب کنید</div>
             </template>
           </v-autocomplete>
-          <v-text-field
-            label="شهر"
-            color="green"
+          <v-select
+            label="استان"
+            :items="get_provinces"
+            item-title="name_fa"
+            item-value="id"
+            v-model="form.province_id"
+            color="orange"
             variant="underlined"
-            v-model="form.city"
-            @input="submit_change"
-            :rules="[(v) => isNaN(v) || 'باید شهر باشد']"
+            @update:modelValue="submit_change"
           >
-          </v-text-field>
+          </v-select>
           <v-text-field
             label="درجه/رتبه"
             color="green"
